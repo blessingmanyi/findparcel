@@ -26,9 +26,9 @@ connectDB();
 
 const allowedOrigins = [
   "http://localhost:3000",
+  "http://localhost:3001",
   "https://findparcel-omega.vercel.app",
 ];
-
 app.use(
   cors({
     origin: function (origin, callback) {
