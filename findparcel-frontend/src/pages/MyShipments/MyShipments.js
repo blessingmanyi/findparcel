@@ -1,26 +1,42 @@
+
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./MyShipments.css";
 
+// =====================================================
+// BACKEND API URL
+// =====================================================
+
+const API_URL =
+  process.env.REACT_APP_API_URL ||
+  "https://findparcel.onrender.com";
+
 function MyShipments() {
   const [shipments, setShipments] = useState([]);
-  const [activeFilter, setActiveFilter] = useState("All");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [activeFilter, setActiveFilter] =
+    useState("All");
+  const [loading, setLoading] =
+    useState(true);
+  const [error, setError] =
+    useState("");
 
   // =====================================================
   // GET LOGGED-IN CUSTOMER
   // =====================================================
 
   const getCustomerId = () => {
-    const savedUser = localStorage.getItem("findparcelUser");
+    const savedUser =
+      localStorage.getItem(
+        "findparcelUser"
+      );
 
     if (!savedUser) {
       return null;
     }
 
     try {
-      const user = JSON.parse(savedUser);
+      const user =
+        JSON.parse(savedUser);
 
       return (
         user?._id ||
@@ -29,7 +45,11 @@ function MyShipments() {
         null
       );
     } catch (error) {
-      console.error("Invalid user data:", error);
+      console.error(
+        "Invalid user data:",
+        error
+      );
+
       return null;
     }
   };
@@ -38,52 +58,102 @@ function MyShipments() {
   // FETCH CUSTOMER SHIPMENTS
   // =====================================================
 
-  const fetchShipments = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError("");
+  const fetchShipments =
+    useCallback(async () => {
+      try {
+        setLoading(true);
+        setError("");
 
-      const customerId = getCustomerId();
+        const customerId =
+          getCustomerId();
 
-      if (!customerId) {
+        if (!customerId) {
+          setError(
+            "Unable to identify your account. Please log in again."
+          );
+
+          setShipments([]);
+
+          return;
+        }
+
+        // =================================================
+        // FETCH FROM RENDER BACKEND
+        // =================================================
+
+        const response =
+          await fetch(
+            `${API_URL}/api/shipments/customer/${encodeURIComponent(
+              customerId
+            )}`
+          );
+
+        // =================================================
+        // READ RESPONSE
+        // =================================================
+
+        const responseText =
+          await response.text();
+
+        let data;
+
+        try {
+          data = JSON.parse(
+            responseText
+          );
+        } catch (jsonError) {
+          console.error(
+            "Backend returned non-JSON response:",
+            responseText
+          );
+
+          throw new Error(
+            "Unable to connect to the shipment service."
+          );
+        }
+
+        // =================================================
+        // HANDLE BACKEND ERROR
+        // =================================================
+
+        if (!response.ok) {
+          throw new Error(
+            data.message ||
+              "Failed to load your shipments."
+          );
+        }
+
+        // =================================================
+        // HANDLE DIFFERENT RESPONSE FORMATS
+        // =================================================
+
+        if (Array.isArray(data)) {
+          setShipments(data);
+        } else if (
+          Array.isArray(data.shipments)
+        ) {
+          setShipments(
+            data.shipments
+          );
+        } else {
+          setShipments([]);
+        }
+
+      } catch (error) {
+        console.error(
+          "Fetch shipments error:",
+          error
+        );
+
         setError(
-          "Unable to identify your account. Please log in again."
+          error.message ||
+            "Unable to load shipments."
         );
 
-        setShipments([]);
-        return;
+      } finally {
+        setLoading(false);
       }
-
-      const response = await fetch(
-        `https://findparcel.onrender.com/api/shipments/customer/${customerId}`
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.message ||
-            "Failed to load your shipments."
-        );
-      }
-
-      setShipments(
-        Array.isArray(data) ? data : []
-      );
-    } catch (error) {
-      console.error(
-        "Fetch shipments error:",
-        error
-      );
-
-      setError(
-        error.message ||
-          "Unable to load shipments."
-      );
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    }, []);
 
   // =====================================================
   // LOAD SHIPMENTS
@@ -102,36 +172,47 @@ function MyShipments() {
       ? shipments
       : shipments.filter(
           (shipment) =>
-            shipment.status === activeFilter
+            shipment.status ===
+            activeFilter
         );
 
   // =====================================================
   // STATISTICS
   // =====================================================
 
-  const totalShipments = shipments.length;
+  const totalShipments =
+    shipments.length;
 
-  const inTransitCount = shipments.filter(
-    (shipment) =>
-      shipment.status === "In Transit" ||
-      shipment.status === "Out for Delivery"
-  ).length;
+  const inTransitCount =
+    shipments.filter(
+      (shipment) =>
+        shipment.status ===
+          "In Transit" ||
+        shipment.status ===
+          "Out for Delivery"
+    ).length;
 
-  const deliveredCount = shipments.filter(
-    (shipment) =>
-      shipment.status === "Delivered"
-  ).length;
+  const deliveredCount =
+    shipments.filter(
+      (shipment) =>
+        shipment.status ===
+        "Delivered"
+    ).length;
 
-  const pendingCount = shipments.filter(
-    (shipment) =>
-      shipment.status === "Pending"
-  ).length;
+  const pendingCount =
+    shipments.filter(
+      (shipment) =>
+        shipment.status ===
+        "Pending"
+    ).length;
 
   // =====================================================
   // STATUS CLASS
   // =====================================================
 
-  const getStatusClass = (status) => {
+  const getStatusClass = (
+    status
+  ) => {
     switch (status) {
       case "In Transit":
         return "transit";
@@ -158,7 +239,9 @@ function MyShipments() {
   // BUTTON TEXT
   // =====================================================
 
-  const getButtonText = (status) => {
+  const getButtonText = (
+    status
+  ) => {
     if (
       status === "In Transit" ||
       status === "Out for Delivery"
@@ -167,6 +250,31 @@ function MyShipments() {
     }
 
     return "View";
+  };
+
+  // =====================================================
+  // FORMAT DATE
+  // =====================================================
+
+  const formatDate = (
+    date
+  ) => {
+    if (!date) {
+      return "N/A";
+    }
+
+    const parsedDate =
+      new Date(date);
+
+    if (
+      Number.isNaN(
+        parsedDate.getTime()
+      )
+    ) {
+      return "N/A";
+    }
+
+    return parsedDate.toLocaleDateString();
   };
 
   // =====================================================
@@ -190,15 +298,18 @@ function MyShipments() {
         </Link>
 
         <div>
-          <h1>My Shipments</h1>
+
+          <h1>
+            My Shipments
+          </h1>
 
           <p>
             Manage and track your parcels
           </p>
+
         </div>
 
       </header>
-
 
       {/* =========================
           INTRODUCTION
@@ -217,7 +328,6 @@ function MyShipments() {
 
       </section>
 
-
       {/* =========================
           STATISTICS
       ========================= */}
@@ -231,6 +341,7 @@ function MyShipments() {
           </div>
 
           <div>
+
             <span>
               Total Shipments
             </span>
@@ -238,10 +349,10 @@ function MyShipments() {
             <strong>
               {totalShipments}
             </strong>
+
           </div>
 
         </div>
-
 
         <div className="stat-card">
 
@@ -250,6 +361,7 @@ function MyShipments() {
           </div>
 
           <div>
+
             <span>
               In Transit
             </span>
@@ -257,10 +369,10 @@ function MyShipments() {
             <strong>
               {inTransitCount}
             </strong>
+
           </div>
 
         </div>
-
 
         <div className="stat-card">
 
@@ -269,6 +381,7 @@ function MyShipments() {
           </div>
 
           <div>
+
             <span>
               Delivered
             </span>
@@ -276,10 +389,10 @@ function MyShipments() {
             <strong>
               {deliveredCount}
             </strong>
+
           </div>
 
         </div>
-
 
         <div className="stat-card">
 
@@ -288,6 +401,7 @@ function MyShipments() {
           </div>
 
           <div>
+
             <span>
               Pending
             </span>
@@ -295,12 +409,12 @@ function MyShipments() {
             <strong>
               {pendingCount}
             </strong>
+
           </div>
 
         </div>
 
       </section>
-
 
       {/* =========================
           FILTER
@@ -313,27 +427,31 @@ function MyShipments() {
           "In Transit",
           "Delivered",
           "Pending",
-        ].map((filter) => (
+        ].map(
+          (filter) => (
 
-          <button
-            key={filter}
-            type="button"
-            className={
-              activeFilter === filter
-                ? "filter-button active"
-                : "filter-button"
-            }
-            onClick={() =>
-              setActiveFilter(filter)
-            }
-          >
-            {filter}
-          </button>
+            <button
+              key={filter}
+              type="button"
+              className={
+                activeFilter ===
+                filter
+                  ? "filter-button active"
+                  : "filter-button"
+              }
+              onClick={() =>
+                setActiveFilter(
+                  filter
+                )
+              }
+            >
+              {filter}
+            </button>
 
-        ))}
+          )
+        )}
 
       </section>
-
 
       {/* =========================
           LOADING
@@ -345,17 +463,16 @@ function MyShipments() {
         </div>
       )}
 
-
       {/* =========================
           ERROR
       ========================= */}
 
-      {!loading && error && (
-        <div className="shipment-message error">
-          {error}
-        </div>
-      )}
-
+      {!loading &&
+        error && (
+          <div className="shipment-message error">
+            {error}
+          </div>
+        )}
 
       {/* =========================
           EMPTY
@@ -363,7 +480,8 @@ function MyShipments() {
 
       {!loading &&
         !error &&
-        filteredShipments.length === 0 && (
+        filteredShipments.length ===
+          0 && (
 
           <div className="shipment-message">
 
@@ -375,14 +493,14 @@ function MyShipments() {
 
         )}
 
-
       {/* =========================
           SHIPMENT LIST
       ========================= */}
 
       {!loading &&
         !error &&
-        filteredShipments.length > 0 && (
+        filteredShipments.length >
+          0 && (
 
           <section className="shipment-list">
 
@@ -391,7 +509,10 @@ function MyShipments() {
 
                 <article
                   className="shipment-item"
-                  key={shipment._id}
+                  key={
+                    shipment._id ||
+                    shipment.trackingNumber
+                  }
                 >
 
                   {/* =========================
@@ -413,24 +534,28 @@ function MyShipments() {
                         </span>
 
                         <strong>
-                          {shipment.trackingNumber}
+                          {
+                            shipment.trackingNumber ||
+                            "N/A"
+                          }
                         </strong>
 
                       </div>
 
                     </div>
 
-
                     <span
                       className={`shipment-badge ${getStatusClass(
                         shipment.status
                       )}`}
                     >
-                      {shipment.status}
+                      {
+                        shipment.status ||
+                        "Pending"
+                      }
                     </span>
 
                   </div>
-
 
                   {/* =========================
                       ROUTE
@@ -445,17 +570,19 @@ function MyShipments() {
                       </span>
 
                       <strong>
-                        {shipment.sender?.city ||
-                          "N/A"}
+                        {
+                          shipment
+                            .sender
+                            ?.city ||
+                          "N/A"
+                        }
                       </strong>
 
                     </div>
 
-
                     <div className="route-line">
                       ───────→
                     </div>
-
 
                     <div className="location">
 
@@ -464,14 +591,17 @@ function MyShipments() {
                       </span>
 
                       <strong>
-                        {shipment.receiver?.city ||
-                          "N/A"}
+                        {
+                          shipment
+                            .receiver
+                            ?.city ||
+                          "N/A"
+                        }
                       </strong>
 
                     </div>
 
                   </div>
-
 
                   {/* =========================
                       FOOTER
@@ -488,15 +618,12 @@ function MyShipments() {
                       </span>
 
                       <strong>
-                        {shipment.createdAt
-                          ? new Date(
-                              shipment.createdAt
-                            ).toLocaleDateString()
-                          : "N/A"}
+                        {formatDate(
+                          shipment.createdAt
+                        )}
                       </strong>
 
                     </div>
-
 
                     {/* SHIPPING PRICE */}
 
@@ -507,6 +634,7 @@ function MyShipments() {
                       </span>
 
                       <strong>
+
                         {shipment.shippingPrice !==
                           undefined &&
                         shipment.shippingPrice !==
@@ -515,51 +643,56 @@ function MyShipments() {
                               shipment.shippingPrice
                             ).toLocaleString()} FCFA`
                           : "N/A"}
+
                       </strong>
 
                     </div>
-
 
                     {/* EXPECTED / DELIVERED */}
 
                     <div>
 
                       <span>
+
                         {shipment.status ===
                         "Delivered"
                           ? "Delivered"
                           : "Expected"}
+
                       </span>
 
                       <strong>
 
                         {shipment.status ===
                         "Delivered"
-                          ? shipment.updatedAt
-                            ? new Date(
-                                shipment.updatedAt
-                              ).toLocaleDateString()
-                            : "N/A"
-                          : shipment.estimatedDelivery ||
-                            "Calculating..."}
+                          ? formatDate(
+                              shipment.updatedAt
+                            )
+                          : shipment
+                              .estimatedDelivery
+                            ? formatDate(
+                                shipment.estimatedDelivery
+                              )
+                            : "Calculating..."}
 
                       </strong>
 
                     </div>
 
-
                     {/* TRACK / VIEW */}
 
-                    <Link
-                      to={`/track?tracking=${encodeURIComponent(
-                        shipment.trackingNumber
-                      )}`}
-                      className="view-shipment-button"
-                    >
-                      {getButtonText(
-                        shipment.status
-                      )}
-                    </Link>
+                    {shipment.trackingNumber && (
+                      <Link
+                        to={`/track?tracking=${encodeURIComponent(
+                          shipment.trackingNumber
+                        )}`}
+                        className="view-shipment-button"
+                      >
+                        {getButtonText(
+                          shipment.status
+                        )}
+                      </Link>
+                    )}
 
                   </div>
 
@@ -571,7 +704,6 @@ function MyShipments() {
           </section>
 
         )}
-
 
       {/* =========================
           CREATE SHIPMENT
@@ -588,4 +720,4 @@ function MyShipments() {
   );
 }
 
-export default MyShipments;
+export default MyShipm

@@ -14,10 +14,12 @@ import "leaflet/dist/leaflet.css";
 import "./TrackParcel.css";
 
 // =====================================================
-// BACKEND URL
+// BACKEND API URL
 // =====================================================
 
-const API_URL = "https://findparcel.onrender.com";
+const API_URL =
+  process.env.REACT_APP_API_URL ||
+  "https://findparcel.onrender.com";
 
 // =====================================================
 // DEFAULT CITY COORDINATES
@@ -79,7 +81,9 @@ const calculateParcelProgress = (shipment) => {
   }
 
   const createdDate = new Date(shipment.createdAt);
-  const deliveryDate = new Date(shipment.estimatedDelivery);
+  const deliveryDate = new Date(
+    shipment.estimatedDelivery
+  );
   const now = new Date();
 
   // ---------------------------------------------------
@@ -97,10 +101,12 @@ const calculateParcelProgress = (shipment) => {
   }
 
   const totalTime =
-    deliveryDate.getTime() - createdDate.getTime();
+    deliveryDate.getTime() -
+    createdDate.getTime();
 
   const elapsedTime =
-    now.getTime() - createdDate.getTime();
+    now.getTime() -
+    createdDate.getTime();
 
   if (totalTime <= 0) {
     return 100;
@@ -147,7 +153,10 @@ const calculateParcelPosition = (shipment) => {
     return start;
   }
 
-  const createdDate = new Date(shipment.createdAt);
+  const createdDate = new Date(
+    shipment.createdAt
+  );
+
   const deliveryDate = new Date(
     shipment.estimatedDelivery
   );
@@ -493,13 +502,14 @@ function TrackParcel() {
       setLiveProgress(progress);
     };
 
+    // Update immediately
     updateTracking();
 
-    const interval =
-      setInterval(
-        updateTracking,
-        1000
-      );
+    // Update every second
+    const interval = setInterval(
+      updateTracking,
+      1000
+    );
 
     return () => {
       clearInterval(interval);

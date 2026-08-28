@@ -13,10 +13,12 @@ function Login() {
   const [loading, setLoading] = useState(false);
 
   // =====================================================
-  // PRODUCTION BACKEND
+  // BACKEND API URL
   // =====================================================
 
-  const API_BASE_URL = "https://findparcel.onrender.com";
+  const API_URL =
+    process.env.REACT_APP_API_URL ||
+    "https://findparcel.onrender.com";
 
   // =====================================================
   // HANDLE LOGIN
@@ -49,7 +51,7 @@ function Login() {
       setLoading(true);
 
       const response = await fetch(
-        `${API_BASE_URL}/api/auth/login`,
+        `${API_URL}/api/auth/login`,
         {
           method: "POST",
 
@@ -65,10 +67,11 @@ function Login() {
       );
 
       // =====================================================
-      // READ RESPONSE
+      // GET RESPONSE AS TEXT FIRST
       // =====================================================
 
-      const responseText = await response.text();
+      const responseText =
+        await response.text();
 
       let data;
 
@@ -81,7 +84,7 @@ function Login() {
         );
 
         throw new Error(
-          "The server returned an invalid response. Please try again."
+          "Unable to connect to the login service. Please make sure your backend is running."
         );
       }
 
@@ -170,15 +173,10 @@ function Login() {
         error.message ||
           "Unable to login. Please try again."
       );
-
     } finally {
       setLoading(false);
     }
   };
-
-  // =====================================================
-  // RENDER
-  // =====================================================
 
   return (
     <main className="login-page">
@@ -190,12 +188,8 @@ function Login() {
         ========================= */}
 
         <div className="login-logo">
-          <img
-            src="/findparcel-icon.png"
-            alt="FindParcel"
-          />
+          📦
         </div>
-
 
         {/* =========================
             TITLE
@@ -208,7 +202,6 @@ function Login() {
         <p className="login-subtitle">
           Login to your FindParcel account
         </p>
-
 
         {/* =========================
             LOGIN FORM
@@ -243,7 +236,6 @@ function Login() {
 
           </div>
 
-
           {/* =========================
               PASSWORD
           ========================= */}
@@ -268,7 +260,6 @@ function Login() {
 
           </div>
 
-
           {/* =========================
               ERROR
           ========================= */}
@@ -278,7 +269,6 @@ function Login() {
               {error}
             </div>
           )}
-
 
           {/* =========================
               LOGIN BUTTON
@@ -295,7 +285,6 @@ function Login() {
           </button>
 
         </form>
-
 
         {/* =========================
             REGISTER

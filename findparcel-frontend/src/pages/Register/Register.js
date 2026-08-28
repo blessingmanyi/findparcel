@@ -16,10 +16,11 @@ function Register() {
   const [loading, setLoading] = useState(false);
 
   // =====================================================
-  // PRODUCTION BACKEND
+  // BACKEND API URL
   // =====================================================
 
-  const API_BASE_URL =
+  const API_URL =
+    process.env.REACT_APP_API_URL ||
     "https://findparcel.onrender.com";
 
   // =====================================================
@@ -31,29 +32,8 @@ function Register() {
 
     setError("");
 
-    const cleanFullName = fullName.trim();
-    const cleanEmail = email.trim().toLowerCase();
-
     // =====================================================
-    // CHECK FULL NAME
-    // =====================================================
-
-    if (!cleanFullName) {
-      setError("Please enter your full name.");
-      return;
-    }
-
-    // =====================================================
-    // CHECK EMAIL
-    // =====================================================
-
-    if (!cleanEmail) {
-      setError("Please enter your email address.");
-      return;
-    }
-
-    // =====================================================
-    // CHECK PASSWORD
+    // CHECK PASSWORDS
     // =====================================================
 
     if (password !== confirmPassword) {
@@ -68,15 +48,15 @@ function Register() {
       return;
     }
 
-    // =====================================================
-    // REGISTER THROUGH BACKEND
-    // =====================================================
-
     try {
       setLoading(true);
 
+      // =====================================================
+      // REGISTER THROUGH BACKEND
+      // =====================================================
+
       const response = await fetch(
-        `${API_BASE_URL}/api/auth/register`,
+        `${API_URL}/api/auth/register`,
         {
           method: "POST",
 
@@ -85,15 +65,15 @@ function Register() {
           },
 
           body: JSON.stringify({
-            fullName: cleanFullName,
-            email: cleanEmail,
+            fullName: fullName.trim(),
+            email: email.trim().toLowerCase(),
             password,
           }),
         }
       );
 
       // =====================================================
-      // READ RESPONSE AS TEXT FIRST
+      // GET RESPONSE AS TEXT FIRST
       // =====================================================
 
       const responseText =
@@ -110,7 +90,7 @@ function Register() {
         );
 
         throw new Error(
-          "The registration server returned an invalid response. Please try again."
+          "Unable to connect to the registration service. Please make sure your backend is running."
         );
       }
 
@@ -127,7 +107,7 @@ function Register() {
 
       // =====================================================
       // ACCOUNT CREATED
-      // VERIFICATION CODE SENT
+      // VERIFICATION CODE SENT TO EMAIL
       // =====================================================
 
       alert(
@@ -135,12 +115,14 @@ function Register() {
       );
 
       // =====================================================
-      // GO TO EMAIL VERIFICATION
+      // GO TO VERIFICATION PAGE
       // =====================================================
 
       navigate("/verify-email", {
         state: {
-          email: data.email || cleanEmail,
+          email:
+            data.email ||
+            email.trim().toLowerCase(),
         },
       });
 
@@ -152,7 +134,7 @@ function Register() {
 
       setError(
         error.message ||
-          "Unable to create account. Please try again."
+          "Unable to create account."
       );
 
     } finally {
@@ -160,52 +142,33 @@ function Register() {
     }
   };
 
-  // =====================================================
-  // RENDER
-  // =====================================================
-
   return (
     <main className="register-page">
 
       <div className="register-container">
 
-        {/* =========================
-            LOGO
-        ========================= */}
+        {/* LOGO */}
 
         <div className="register-logo">
-          <img
-            src="/findparcel-icon.png"
-            alt="FindParcel"
-          />
+          📦
         </div>
 
+        {/* TITLE */}
 
-        {/* =========================
-            TITLE
-        ========================= */}
-
-        <h1>
-          Create Account
-        </h1>
+        <h1>Create Account</h1>
 
         <p className="register-subtitle">
           Create your FindParcel account
         </p>
 
-
-        {/* =========================
-            REGISTRATION FORM
-        ========================= */}
+        {/* REGISTRATION FORM */}
 
         <form
           className="register-form"
           onSubmit={handleSubmit}
         >
 
-          {/* =========================
-              FULL NAME
-          ========================= */}
+          {/* FULL NAME */}
 
           <div className="register-form-group">
 
@@ -227,10 +190,7 @@ function Register() {
 
           </div>
 
-
-          {/* =========================
-              EMAIL
-          ========================= */}
+          {/* EMAIL */}
 
           <div className="register-form-group">
 
@@ -252,10 +212,7 @@ function Register() {
 
           </div>
 
-
-          {/* =========================
-              PASSWORD
-          ========================= */}
+          {/* PASSWORD */}
 
           <div className="register-form-group">
 
@@ -277,10 +234,7 @@ function Register() {
 
           </div>
 
-
-          {/* =========================
-              CONFIRM PASSWORD
-          ========================= */}
+          {/* CONFIRM PASSWORD */}
 
           <div className="register-form-group">
 
@@ -304,10 +258,7 @@ function Register() {
 
           </div>
 
-
-          {/* =========================
-              ERROR
-          ========================= */}
+          {/* ERROR */}
 
           {error && (
             <div className="register-error">
@@ -315,10 +266,7 @@ function Register() {
             </div>
           )}
 
-
-          {/* =========================
-              SUBMIT
-          ========================= */}
+          {/* SUBMIT */}
 
           <button
             type="submit"
@@ -332,19 +280,14 @@ function Register() {
 
         </form>
 
-
-        {/* =========================
-            LOGIN
-        ========================= */}
+        {/* LOGIN LINK */}
 
         <p className="register-login-text">
-
           Already have an account?{" "}
 
           <Link to="/login">
             Login
           </Link>
-
         </p>
 
       </div>

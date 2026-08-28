@@ -1,6 +1,15 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./SendParcel.css";
+
+// =====================================================
+// BACKEND API URL
+// =====================================================
+
+const API_URL =
+  process.env.REACT_APP_API_URL ||
+  "https://findparcel.onrender.com";
 
 function SendParcel() {
   const [sender, setSender] = useState({
@@ -35,9 +44,13 @@ function SendParcel() {
   const [trackingNumber, setTrackingNumber] =
     useState("");
 
-  // =========================
+  const [submitting, setSubmitting] =
+    useState(false);
+
+  // =====================================================
   // HANDLE SENDER
-  // =========================
+  // =====================================================
+
   const handleSenderChange = (e) => {
     const { name, value } = e.target;
 
@@ -47,9 +60,10 @@ function SendParcel() {
     }));
   };
 
-  // =========================
+  // =====================================================
   // HANDLE RECEIVER
-  // =========================
+  // =====================================================
+
   const handleReceiverChange = (e) => {
     const { name, value } = e.target;
 
@@ -59,9 +73,10 @@ function SendParcel() {
     }));
   };
 
-  // =========================
+  // =====================================================
   // HANDLE PACKAGE
-  // =========================
+  // =====================================================
+
   const handlePackageChange = (e) => {
     const { name, value } = e.target;
 
@@ -71,9 +86,10 @@ function SendParcel() {
     }));
   };
 
-  // =========================
+  // =====================================================
   // CALCULATE SHIPPING
-  // =========================
+  // =====================================================
+
   const calculateShipping = () => {
     let price = 3000;
 
@@ -93,13 +109,18 @@ function SendParcel() {
       price = 5000;
     }
 
-    const weight = Number(packageInfo.weight);
+    const weight = Number(
+      packageInfo.weight
+    );
 
     if (weight > 1) {
-      price += Math.ceil(weight - 1) * 500;
+      price +=
+        Math.ceil(weight - 1) * 500;
     }
 
-    if (deliverySpeed === "express") {
+    if (
+      deliverySpeed === "express"
+    ) {
       price += 2000;
     }
 
@@ -107,21 +128,30 @@ function SendParcel() {
     return price + 500;
   };
 
-  // =========================
+  // =====================================================
   // CREATE SHIPMENT
-  // =========================
+  // =====================================================
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Prevent duplicate submissions
+    if (submitting) {
+      return;
+    }
 
     setError("");
     setSubmitted(false);
     setTrackingNumber("");
 
-    // =========================
+    // ===================================================
     // GET LOGGED-IN CUSTOMER
-    // =========================
+    // ===================================================
+
     const savedUser =
-      localStorage.getItem("findparcelUser");
+      localStorage.getItem(
+        "findparcelUser"
+      );
 
     if (!savedUser) {
       setError(
@@ -135,9 +165,15 @@ function SendParcel() {
     try {
       user = JSON.parse(savedUser);
     } catch (error) {
+      console.error(
+        "Invalid saved user:",
+        error
+      );
+
       setError(
         "Your login session is invalid. Please log in again."
       );
+
       return;
     }
 
@@ -150,91 +186,142 @@ function SendParcel() {
       setError(
         "Unable to identify your customer account. Please log in again."
       );
+
       return;
     }
 
-    // =========================
+    // ===================================================
     // VALIDATE SENDER
-    // =========================
+    // ===================================================
+
     if (
-      !sender.name ||
-      !sender.phone ||
-      !sender.email ||
-      !sender.idNumber ||
+      !sender.name.trim() ||
+      !sender.phone.trim() ||
+      !sender.email.trim() ||
+      !sender.idNumber.trim() ||
       !sender.city ||
-      !sender.address
+      !sender.address.trim()
     ) {
       setError(
         "Please complete all sender information."
       );
+
       return;
     }
 
-    // =========================
+    // ===================================================
     // VALIDATE RECEIVER
-    // =========================
+    // ===================================================
+
     if (
-      !receiver.name ||
-      !receiver.phone ||
-      !receiver.email ||
-      !receiver.idNumber ||
+      !receiver.name.trim() ||
+      !receiver.phone.trim() ||
+      !receiver.email.trim() ||
+      !receiver.idNumber.trim() ||
       !receiver.city ||
-      !receiver.address
+      !receiver.address.trim()
     ) {
       setError(
         "Please complete all receiver information."
       );
+
       return;
     }
 
-    // =========================
+    // ===================================================
     // VALIDATE PACKAGE
-    // =========================
+    // ===================================================
+
     if (
       !packageInfo.type ||
       !packageInfo.weight ||
-      !packageInfo.description
+      !packageInfo.description.trim()
     ) {
       setError(
         "Please complete all package information."
       );
+
       return;
     }
 
-    if (Number(packageInfo.weight) <= 0) {
+    // ===================================================
+    // VALIDATE WEIGHT
+    // ===================================================
+
+    if (
+      Number(packageInfo.weight) <= 0
+    ) {
       setError(
         "Package weight must be greater than 0 kg."
       );
+
       return;
     }
 
-    // =========================
+    // ===================================================
     // CHECK DIFFERENT CITIES
-    // =========================
-    if (sender.city === receiver.city) {
+    // ===================================================
+
+    if (
+      sender.city === receiver.city
+    ) {
       setError(
         "Sender and receiver cities cannot be the same."
       );
+
       return;
     }
 
-    const shippingPrice = calculateShipping();
+    // ===================================================
+    // CALCULATE SHIPPING PRICE
+    // ===================================================
+
+    const shippingPrice =
+      calculateShipping();
 
     try {
-      // =========================
+      setSubmitting(true);
+
+      // =================================================
       // DATA SENT TO BACKEND
-      // =========================
+      // =================================================
+
       const shipmentData = {
         customerId,
 
-        sender,
+        sender: {
+          ...sender,
+          name: sender.name.trim(),
+          phone: sender.phone.trim(),
+          email: sender.email
+            .trim()
+            .toLowerCase(),
+          idNumber:
+            sender.idNumber.trim(),
+          address:
+            sender.address.trim(),
+        },
 
-        receiver,
+        receiver: {
+          ...receiver,
+          name: receiver.name.trim(),
+          phone: receiver.phone.trim(),
+          email: receiver.email
+            .trim()
+            .toLowerCase(),
+          idNumber:
+            receiver.idNumber.trim(),
+          address:
+            receiver.address.trim(),
+        },
 
         packageInfo: {
           type: packageInfo.type,
-          weight: Number(packageInfo.weight),
-          description: packageInfo.description,
+          weight: Number(
+            packageInfo.weight
+          ),
+          description:
+            packageInfo.description.trim(),
         },
 
         deliverySpeed,
@@ -242,8 +329,12 @@ function SendParcel() {
         shippingPrice,
       };
 
+      // =================================================
+      // CREATE SHIPMENT
+      // =================================================
+
       const response = await fetch(
-        "https://findparcel.onrender.com/api/shipments",
+        `${API_URL}/api/shipments`,
         {
           method: "POST",
 
@@ -251,11 +342,39 @@ function SendParcel() {
             "Content-Type": "application/json",
           },
 
-          body: JSON.stringify(shipmentData),
+          body: JSON.stringify(
+            shipmentData
+          ),
         }
       );
 
-      const data = await response.json();
+      // =================================================
+      // READ RESPONSE
+      // =================================================
+
+      const responseText =
+        await response.text();
+
+      let data;
+
+      try {
+        data = JSON.parse(
+          responseText
+        );
+      } catch (jsonError) {
+        console.error(
+          "Backend returned non-JSON response:",
+          responseText
+        );
+
+        throw new Error(
+          "Unable to connect to the shipment service. Please try again."
+        );
+      }
+
+      // =================================================
+      // HANDLE BACKEND ERROR
+      // =================================================
 
       if (!response.ok) {
         throw new Error(
@@ -264,30 +383,49 @@ function SendParcel() {
         );
       }
 
+      // =================================================
+      // GET CREATED SHIPMENT
+      // =================================================
+
+      const createdShipment =
+        data.shipment;
+
+      if (
+        !createdShipment ||
+        !createdShipment.trackingNumber
+      ) {
+        throw new Error(
+          "Shipment was created, but no tracking number was returned."
+        );
+      }
+
       console.log(
         "Shipment created:",
-        data.shipment
+        createdShipment
       );
 
-      // =========================
+      // =================================================
       // SAVE TRACKING NUMBER
-      // =========================
+      // =================================================
+
       setTrackingNumber(
-        data.shipment.trackingNumber
+        createdShipment.trackingNumber
       );
 
       setSubmitted(true);
 
-      // =========================
+      // =================================================
       // SUCCESS MESSAGE
-      // =========================
+      // =================================================
+
       alert(
-        `Shipment created successfully!\n\nYour tracking number is: ${data.shipment.trackingNumber}`
+        `Shipment created successfully!\n\nYour tracking number is: ${createdShipment.trackingNumber}`
       );
 
-      // =========================
+      // =================================================
       // RESET FORM
-      // =========================
+      // =================================================
+
       setSender({
         name: "",
         phone: "",
@@ -312,7 +450,10 @@ function SendParcel() {
         description: "",
       });
 
-      setDeliverySpeed("standard");
+      setDeliverySpeed(
+        "standard"
+      );
+
     } catch (error) {
       console.error(
         "Shipment creation error:",
@@ -323,10 +464,21 @@ function SendParcel() {
         error.message ||
           "Something went wrong while creating the shipment."
       );
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  const shippingPrice = calculateShipping();
+  // =====================================================
+  // SHIPPING PRICE
+  // =====================================================
+
+  const shippingPrice =
+    calculateShipping();
+
+  // =====================================================
+  // RENDER
+  // =====================================================
 
   return (
     <main className="send-page">
@@ -334,6 +486,7 @@ function SendParcel() {
       {/* =========================
           HEADER
       ========================= */}
+
       <header className="send-header">
 
         <Link
@@ -344,7 +497,9 @@ function SendParcel() {
         </Link>
 
         <div>
-          <h1>Send a Parcel</h1>
+          <h1>
+            Send a Parcel
+          </h1>
 
           <p>
             Create a new shipment
@@ -353,21 +508,26 @@ function SendParcel() {
 
       </header>
 
-
       {/* =========================
           INTRODUCTION
       ========================= */}
+
       <section className="send-introduction">
 
-        <h2>Book a Shipment</h2>
+        <h2>
+          Book a Shipment
+        </h2>
 
         <p>
-          Enter the sender, receiver and package
-          information below.
+          Enter the sender, receiver and
+          package information below.
         </p>
 
       </section>
 
+      {/* =========================
+          MAIN FORM
+      ========================= */}
 
       <form
         className="send-form"
@@ -377,6 +537,7 @@ function SendParcel() {
         {/* =========================
             SENDER
         ========================= */}
+
         <section className="send-card">
 
           <div className="send-card-heading">
@@ -397,7 +558,6 @@ function SendParcel() {
 
           </div>
 
-
           <div className="send-form-grid">
 
             <div className="send-form-group">
@@ -411,12 +571,13 @@ function SendParcel() {
                 id="sender-name"
                 name="name"
                 value={sender.name}
-                onChange={handleSenderChange}
+                onChange={
+                  handleSenderChange
+                }
                 placeholder="Enter sender name"
               />
 
             </div>
-
 
             <div className="send-form-group">
 
@@ -429,12 +590,13 @@ function SendParcel() {
                 id="sender-phone"
                 name="phone"
                 value={sender.phone}
-                onChange={handleSenderChange}
+                onChange={
+                  handleSenderChange
+                }
                 placeholder="Enter phone number"
               />
 
             </div>
-
 
             <div className="send-form-group">
 
@@ -447,16 +609,14 @@ function SendParcel() {
                 id="sender-email"
                 name="email"
                 value={sender.email}
-                onChange={handleSenderChange}
+                onChange={
+                  handleSenderChange
+                }
                 placeholder="Enter email address"
               />
 
             </div>
 
-
-            {/* =========================
-                SENDER ID NUMBER
-            ========================= */}
             <div className="send-form-group">
 
               <label htmlFor="sender-id-number">
@@ -468,12 +628,13 @@ function SendParcel() {
                 id="sender-id-number"
                 name="idNumber"
                 value={sender.idNumber}
-                onChange={handleSenderChange}
+                onChange={
+                  handleSenderChange
+                }
                 placeholder="Enter sender ID number"
               />
 
             </div>
-
 
             <div className="send-form-group">
 
@@ -485,7 +646,9 @@ function SendParcel() {
                 id="sender-city"
                 name="city"
                 value={sender.city}
-                onChange={handleSenderChange}
+                onChange={
+                  handleSenderChange
+                }
               >
 
                 <option value="">
@@ -516,7 +679,6 @@ function SendParcel() {
 
             </div>
 
-
             <div className="send-form-group full-width">
 
               <label htmlFor="sender-address">
@@ -528,7 +690,9 @@ function SendParcel() {
                 id="sender-address"
                 name="address"
                 value={sender.address}
-                onChange={handleSenderChange}
+                onChange={
+                  handleSenderChange
+                }
                 placeholder="Enter complete address"
               />
 
@@ -538,10 +702,10 @@ function SendParcel() {
 
         </section>
 
-
         {/* =========================
             RECEIVER
         ========================= */}
+
         <section className="send-card">
 
           <div className="send-card-heading">
@@ -562,7 +726,6 @@ function SendParcel() {
 
           </div>
 
-
           <div className="send-form-grid">
 
             <div className="send-form-group">
@@ -576,12 +739,13 @@ function SendParcel() {
                 id="receiver-name"
                 name="name"
                 value={receiver.name}
-                onChange={handleReceiverChange}
+                onChange={
+                  handleReceiverChange
+                }
                 placeholder="Enter receiver name"
               />
 
             </div>
-
 
             <div className="send-form-group">
 
@@ -594,12 +758,13 @@ function SendParcel() {
                 id="receiver-phone"
                 name="phone"
                 value={receiver.phone}
-                onChange={handleReceiverChange}
+                onChange={
+                  handleReceiverChange
+                }
                 placeholder="Enter phone number"
               />
 
             </div>
-
 
             <div className="send-form-group">
 
@@ -612,16 +777,14 @@ function SendParcel() {
                 id="receiver-email"
                 name="email"
                 value={receiver.email}
-                onChange={handleReceiverChange}
+                onChange={
+                  handleReceiverChange
+                }
                 placeholder="Enter email address"
               />
 
             </div>
 
-
-            {/* =========================
-                RECEIVER ID NUMBER
-            ========================= */}
             <div className="send-form-group">
 
               <label htmlFor="receiver-id-number">
@@ -633,12 +796,13 @@ function SendParcel() {
                 id="receiver-id-number"
                 name="idNumber"
                 value={receiver.idNumber}
-                onChange={handleReceiverChange}
+                onChange={
+                  handleReceiverChange
+                }
                 placeholder="Enter receiver ID number"
               />
 
             </div>
-
 
             <div className="send-form-group">
 
@@ -650,7 +814,9 @@ function SendParcel() {
                 id="receiver-city"
                 name="city"
                 value={receiver.city}
-                onChange={handleReceiverChange}
+                onChange={
+                  handleReceiverChange
+                }
               >
 
                 <option value="">
@@ -681,7 +847,6 @@ function SendParcel() {
 
             </div>
 
-
             <div className="send-form-group full-width">
 
               <label htmlFor="receiver-address">
@@ -693,7 +858,9 @@ function SendParcel() {
                 id="receiver-address"
                 name="address"
                 value={receiver.address}
-                onChange={handleReceiverChange}
+                onChange={
+                  handleReceiverChange
+                }
                 placeholder="Enter complete address"
               />
 
@@ -703,10 +870,10 @@ function SendParcel() {
 
         </section>
 
-
         {/* =========================
             PACKAGE
         ========================= */}
+
         <section className="send-card">
 
           <div className="send-card-heading">
@@ -727,7 +894,6 @@ function SendParcel() {
 
           </div>
 
-
           <div className="send-form-grid">
 
             <div className="send-form-group">
@@ -739,8 +905,12 @@ function SendParcel() {
               <select
                 id="package-type"
                 name="type"
-                value={packageInfo.type}
-                onChange={handlePackageChange}
+                value={
+                  packageInfo.type
+                }
+                onChange={
+                  handlePackageChange
+                }
               >
 
                 <option value="">
@@ -767,7 +937,6 @@ function SendParcel() {
 
             </div>
 
-
             <div className="send-form-group">
 
               <label htmlFor="package-weight">
@@ -782,17 +951,22 @@ function SendParcel() {
                   name="weight"
                   min="0"
                   step="0.1"
-                  value={packageInfo.weight}
-                  onChange={handlePackageChange}
+                  value={
+                    packageInfo.weight
+                  }
+                  onChange={
+                    handlePackageChange
+                  }
                   placeholder="Enter weight"
                 />
 
-                <span>kg</span>
+                <span>
+                  kg
+                </span>
 
               </div>
 
             </div>
-
 
             <div className="send-form-group full-width">
 
@@ -803,8 +977,12 @@ function SendParcel() {
               <textarea
                 id="package-description"
                 name="description"
-                value={packageInfo.description}
-                onChange={handlePackageChange}
+                value={
+                  packageInfo.description
+                }
+                onChange={
+                  handlePackageChange
+                }
                 placeholder="Describe the contents of your parcel"
                 rows="4"
               />
@@ -815,10 +993,10 @@ function SendParcel() {
 
         </section>
 
-
         {/* =========================
             DELIVERY
         ========================= */}
+
         <section className="send-card">
 
           <div className="send-card-heading">
@@ -833,18 +1011,19 @@ function SendParcel() {
               </h3>
 
               <p>
-                Choose your preferred delivery speed.
+                Choose your preferred
+                delivery speed.
               </p>
             </div>
 
           </div>
 
-
           <div className="delivery-options">
 
             <label
               className={
-                deliverySpeed === "standard"
+                deliverySpeed ===
+                "standard"
                   ? "delivery-option selected"
                   : "delivery-option"
               }
@@ -855,7 +1034,8 @@ function SendParcel() {
                 name="sendDeliverySpeed"
                 value="standard"
                 checked={
-                  deliverySpeed === "standard"
+                  deliverySpeed ===
+                  "standard"
                 }
                 onChange={(e) =>
                   setDeliverySpeed(
@@ -865,6 +1045,7 @@ function SendParcel() {
               />
 
               <div>
+
                 <strong>
                   Standard Delivery
                 </strong>
@@ -872,6 +1053,7 @@ function SendParcel() {
                 <span>
                   2 - 4 business days
                 </span>
+
               </div>
 
               <b>
@@ -880,10 +1062,10 @@ function SendParcel() {
 
             </label>
 
-
             <label
               className={
-                deliverySpeed === "express"
+                deliverySpeed ===
+                "express"
                   ? "delivery-option selected"
                   : "delivery-option"
               }
@@ -894,7 +1076,8 @@ function SendParcel() {
                 name="sendDeliverySpeed"
                 value="express"
                 checked={
-                  deliverySpeed === "express"
+                  deliverySpeed ===
+                  "express"
                 }
                 onChange={(e) =>
                   setDeliverySpeed(
@@ -904,6 +1087,7 @@ function SendParcel() {
               />
 
               <div>
+
                 <strong>
                   Express Delivery
                 </strong>
@@ -911,6 +1095,7 @@ function SendParcel() {
                 <span>
                   1 - 2 business days
                 </span>
+
               </div>
 
               <b>
@@ -923,47 +1108,49 @@ function SendParcel() {
 
         </section>
 
-
         {/* =========================
             ERROR
         ========================= */}
+
         {error && (
           <div className="send-error">
             {error}
           </div>
         )}
 
-
         {/* =========================
             SUCCESS
         ========================= */}
-        {submitted && trackingNumber && (
-          <div className="send-success">
 
-            <p>
-              Shipment created successfully! 🎉
-            </p>
+        {submitted &&
+          trackingNumber && (
+            <div className="send-success">
 
-            <p>
-              Your tracking number is:
-            </p>
+              <p>
+                Shipment created
+                successfully! 🎉
+              </p>
 
-            <strong className="generated-tracking-number">
-              {trackingNumber}
-            </strong>
+              <p>
+                Your tracking number is:
+              </p>
 
-            <p>
-              Save this tracking number to track
-              your parcel.
-            </p>
+              <strong className="generated-tracking-number">
+                {trackingNumber}
+              </strong>
 
-          </div>
-        )}
+              <p>
+                Save this tracking number
+                to track your parcel.
+              </p>
 
+            </div>
+          )}
 
         {/* =========================
             SHIPPING SUMMARY
         ========================= */}
+
         <section className="send-summary">
 
           <div className="summary-heading">
@@ -978,7 +1165,6 @@ function SendParcel() {
 
           </div>
 
-
           <div className="summary-row">
 
             <span>
@@ -986,11 +1172,13 @@ function SendParcel() {
             </span>
 
             <strong>
-              {(shippingPrice - 500).toLocaleString()} FCFA
+              {(
+                shippingPrice - 500
+              ).toLocaleString()}{" "}
+              FCFA
             </strong>
 
           </div>
-
 
           <div className="summary-row">
 
@@ -1004,7 +1192,6 @@ function SendParcel() {
 
           </div>
 
-
           <div className="summary-total">
 
             <span>
@@ -1012,22 +1199,26 @@ function SendParcel() {
             </span>
 
             <strong>
-              {shippingPrice.toLocaleString()} FCFA
+              {shippingPrice.toLocaleString()}{" "}
+              FCFA
             </strong>
 
           </div>
 
         </section>
 
-
         {/* =========================
             SUBMIT
         ========================= */}
+
         <button
           type="submit"
           className="submit-shipment-button"
+          disabled={submitting}
         >
-          Create Shipment
+          {submitting
+            ? "Creating Shipment..."
+            : "Create Shipment"}
         </button>
 
       </form>
@@ -1037,3 +1228,4 @@ function SendParcel() {
 }
 
 export default SendParcel;
+

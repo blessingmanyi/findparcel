@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./VerifyEmail.css";
@@ -16,17 +17,37 @@ function VerifyEmail() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // =====================================================
+  // BACKEND API URL
+  // =====================================================
+
+  const API_URL =
+    process.env.REACT_APP_API_URL ||
+    "https://findparcel.onrender.com";
+
+  // =====================================================
+  // HANDLE EMAIL VERIFICATION
+  // =====================================================
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setError("");
 
-    if (!email || !verificationCode) {
+    // =====================================================
+    // CHECK FIELDS
+    // =====================================================
+
+    if (!email.trim() || !verificationCode) {
       setError(
         "Please enter your email and verification code."
       );
       return;
     }
+
+    // =====================================================
+    // CHECK VERIFICATION CODE
+    // =====================================================
 
     if (!/^\d{6}$/.test(verificationCode)) {
       setError(
@@ -38,8 +59,12 @@ function VerifyEmail() {
     try {
       setLoading(true);
 
+      // =====================================================
+      // VERIFY EMAIL THROUGH BACKEND
+      // =====================================================
+
       const response = await fetch(
-        "https://findparcel.onrender.com/api/auth/verify-email",
+        `${API_URL}/api/auth/verify-email`,
         {
           method: "POST",
 
@@ -48,13 +73,37 @@ function VerifyEmail() {
           },
 
           body: JSON.stringify({
-            email,
+            email: email.trim().toLowerCase(),
             verificationCode,
           }),
         }
       );
 
-      const data = await response.json();
+      // =====================================================
+      // GET RESPONSE AS TEXT FIRST
+      // =====================================================
+
+      const responseText =
+        await response.text();
+
+      let data;
+
+      try {
+        data = JSON.parse(responseText);
+      } catch (jsonError) {
+        console.error(
+          "Backend returned non-JSON response:",
+          responseText
+        );
+
+        throw new Error(
+          "Unable to connect to the verification service. Please make sure your backend is running."
+        );
+      }
+
+      // =====================================================
+      // BACKEND ERROR
+      // =====================================================
 
       if (!response.ok) {
         throw new Error(
@@ -63,9 +112,17 @@ function VerifyEmail() {
         );
       }
 
+      // =====================================================
+      // VERIFICATION SUCCESSFUL
+      // =====================================================
+
       alert(
         "Email verified successfully! You can now login."
       );
+
+      // =====================================================
+      // GO TO LOGIN
+      // =====================================================
 
       navigate("/login");
 
@@ -90,9 +147,17 @@ function VerifyEmail() {
 
       <div className="verify-container">
 
+        {/* =========================
+            LOGO
+        ========================= */}
+
         <div className="verify-logo">
           📧
         </div>
+
+        {/* =========================
+            TITLE
+        ========================= */}
 
         <h1>
           Verify Your Email
@@ -103,10 +168,18 @@ function VerifyEmail() {
           to your email address.
         </p>
 
+        {/* =========================
+            VERIFICATION FORM
+        ========================= */}
+
         <form
           className="verify-form"
           onSubmit={handleSubmit}
         >
+
+          {/* =========================
+              EMAIL
+          ========================= */}
 
           <div className="verify-form-group">
 
@@ -122,11 +195,15 @@ function VerifyEmail() {
                 setEmail(e.target.value)
               }
               placeholder="Enter your email"
+              autoComplete="email"
               required
             />
 
           </div>
 
+          {/* =========================
+              VERIFICATION CODE
+          ========================= */}
 
           <div className="verify-form-group">
 
@@ -148,11 +225,15 @@ function VerifyEmail() {
               placeholder="Enter 6-digit code"
               inputMode="numeric"
               maxLength="6"
+              autoComplete="one-time-code"
               required
             />
 
           </div>
 
+          {/* =========================
+              ERROR
+          ========================= */}
 
           {error && (
             <div className="verify-error">
@@ -160,6 +241,9 @@ function VerifyEmail() {
             </div>
           )}
 
+          {/* =========================
+              VERIFY BUTTON
+          ========================= */}
 
           <button
             type="submit"
