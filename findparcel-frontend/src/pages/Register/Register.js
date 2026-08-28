@@ -36,7 +36,7 @@ function Register() {
       setLoading(true);
 
       const response = await fetch(
-        "http://findparcel.onrender.com/api/auth/register",
+        "https://findparcel.onrender.com//api/auth/register",
         {
           method: "POST",
 

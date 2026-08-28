@@ -112,7 +112,7 @@ function PaymentMethods() {
 
       const paymentResponse =
         await fetch(
-          "http://findparcel.onrender.com/api/payments/mobile-money",
+          "https://findparcel.onrender.com//api/payments/mobile-money",
           {
             method: "POST",
 
@@ -193,7 +193,7 @@ function PaymentMethods() {
 
       const verifyResponse =
         await fetch(
-          "http://findparcel.onrender.com/api/payments/verify",
+          "https://findparcel.onrender.com//api/payments/verify",
           {
             method: "POST",
 

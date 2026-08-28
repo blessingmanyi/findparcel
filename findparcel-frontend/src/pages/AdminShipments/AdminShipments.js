@@ -16,7 +16,7 @@ function AdminShipments() {
     try {
       setLoading(true);
       setError("");
-      const response = await fetch("http://findparcel.onrender.com/api/shipments");
+      const response = await fetch("https://findparcel.onrender.com//api/shipments");
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Failed to load shipments.");
       setShipments(Array.isArray(data) ? data : []);
@@ -36,7 +36,7 @@ function AdminShipments() {
       setError("");
       setSuccessMessage("");
       const response = await fetch(
-        `http://findparcel.onrender.com/api/shipments/${trackingNumber}/status`,
+        `https://findparcel.onrender.com//api/shipments/${trackingNumber}/status`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

@@ -243,7 +243,7 @@ function SendParcel() {
       };
 
       const response = await fetch(
-        "http://findparcel.onrender.com/api/shipments",
+        "https://findparcel.onrender.com//api/shipments",
         {
           method: "POST",
 
