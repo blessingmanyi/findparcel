@@ -21,7 +21,7 @@ const app = express();
 connectDB();
 
 // =====================================================
-// CORS
+// CORS CONFIGURATION
 // =====================================================
 
 const allowedOrigins = [
@@ -32,7 +32,8 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests without an origin
+      // Allow requests such as Postman/server-to-server
+      // that do not send an Origin header.
       if (!origin) {
         return callback(null, true);
       }
@@ -41,7 +42,7 @@ app.use(
         return callback(null, true);
       }
 
-      console.log("Blocked CORS origin:", origin);
+      console.log("CORS blocked origin:", origin);
 
       return callback(
         new Error("Not allowed by CORS")
@@ -69,13 +70,7 @@ app.use(
 );
 
 // =====================================================
-// HANDLE PREFLIGHT REQUESTS
-// =====================================================
-
-app.options("*", cors());
-
-// =====================================================
-// JSON BODY
+// JSON BODY PARSER
 // =====================================================
 
 app.use(express.json());
@@ -145,7 +140,7 @@ app.use(
 );
 
 // =====================================================
-// SERVER
+// START SERVER
 // =====================================================
 
 const PORT = process.env.PORT || 5000;
