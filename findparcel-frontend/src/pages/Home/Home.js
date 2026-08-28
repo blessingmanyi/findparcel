@@ -56,7 +56,7 @@ function Home() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/shipments/customer/${customerId}`
+        `http://findparcel.onrender.com/api/shipments/customer/${customerId}`
       );
 
       const data = await response.json();
@@ -97,7 +97,7 @@ function Home() {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/notifications/customer/${customerId}/unread-count`
+        `http://findparcel.onrender.com/api/notifications/customer/${customerId}/unread-count`
       );
 
       const data = await response.json();

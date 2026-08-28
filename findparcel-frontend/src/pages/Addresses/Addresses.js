@@ -99,7 +99,7 @@ function Addresses() {
         }
 
         const response = await fetch(
-          `http://localhost:5000/api/addresses/customer/${customerId}`
+          `http://findparcel.onrender.com/api/addresses/customer/${customerId}`
         );
 
         const responseText =
@@ -305,7 +305,7 @@ function Addresses() {
 
       if (editingId) {
         const response = await fetch(
-          `http://localhost:5000/api/addresses/${editingId}`,
+          `http://findparcel.onrender.com/api/addresses/${editingId}`,
           {
             method: "PUT",
 
@@ -365,7 +365,7 @@ function Addresses() {
       // =================================================
 
       const response = await fetch(
-        "http://localhost:5000/api/addresses",
+        "http://findparcel.onrender.com/api/addresses",
         {
           method: "POST",
 
@@ -498,7 +498,7 @@ function Addresses() {
       setError("");
 
       const response = await fetch(
-        `http://localhost:5000/api/addresses/${id}`,
+        `http://findparcel.onrender.com/api/addresses/${id}`,
         {
           method: "DELETE",
 
@@ -571,7 +571,7 @@ function Addresses() {
       setError("");
 
       const response = await fetch(
-        `http://localhost:5000/api/addresses/${id}/default`,
+        `http://findparcel.onrender.com/api/addresses/${id}/default`,
         {
           method: "PATCH",
 

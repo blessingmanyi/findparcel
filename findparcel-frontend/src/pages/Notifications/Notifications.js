@@ -58,7 +58,7 @@ function Notifications() {
       }
 
       const response = await fetch(
-        `http://localhost:5000/api/notifications/customer/${customerId}`
+        `http://findparcel.onrender.com/api/notifications/customer/${customerId}`
       );
 
       const data = await response.json();
@@ -101,7 +101,7 @@ function Notifications() {
   const markAsRead = async (notificationId) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/notifications/${notificationId}/read`,
+        `http://findparcel.onrender.com/api/notifications/${notificationId}/read`,
         {
           method: "PATCH",
           headers: {
@@ -149,7 +149,7 @@ function Notifications() {
       }
 
       const response = await fetch(
-        `http://localhost:5000/api/notifications/customer/${customerId}/read-all`,
+        `http://findparcel.onrender.com/api/notifications/customer/${customerId}/read-all`,
         {
           method: "PATCH",
           headers: {

@@ -39,7 +39,7 @@ function VerifyEmail() {
       setLoading(true);
 
       const response = await fetch(
-        "http://localhost:5000/api/auth/verify-email",
+        "http://findparcel.onrender.com/api/auth/verify-email",
         {
           method: "POST",
 
