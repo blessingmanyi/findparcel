@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Register.css";
@@ -14,12 +15,47 @@ function Register() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // =====================================================
+  // PRODUCTION BACKEND
+  // =====================================================
+
+  const API_BASE_URL =
+    "https://findparcel.onrender.com";
+
+  // =====================================================
+  // HANDLE REGISTRATION
+  // =====================================================
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setError("");
 
-    // Check passwords
+    const cleanFullName = fullName.trim();
+    const cleanEmail = email.trim().toLowerCase();
+
+    // =====================================================
+    // CHECK FULL NAME
+    // =====================================================
+
+    if (!cleanFullName) {
+      setError("Please enter your full name.");
+      return;
+    }
+
+    // =====================================================
+    // CHECK EMAIL
+    // =====================================================
+
+    if (!cleanEmail) {
+      setError("Please enter your email address.");
+      return;
+    }
+
+    // =====================================================
+    // CHECK PASSWORD
+    // =====================================================
+
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
@@ -32,11 +68,15 @@ function Register() {
       return;
     }
 
+    // =====================================================
+    // REGISTER THROUGH BACKEND
+    // =====================================================
+
     try {
       setLoading(true);
 
       const response = await fetch(
-        "https://findparcel.onrender.com/api/auth/register",
+        `${API_BASE_URL}/api/auth/register`,
         {
           method: "POST",
 
@@ -45,14 +85,38 @@ function Register() {
           },
 
           body: JSON.stringify({
-            fullName,
-            email,
+            fullName: cleanFullName,
+            email: cleanEmail,
             password,
           }),
         }
       );
 
-      const data = await response.json();
+      // =====================================================
+      // READ RESPONSE AS TEXT FIRST
+      // =====================================================
+
+      const responseText =
+        await response.text();
+
+      let data;
+
+      try {
+        data = JSON.parse(responseText);
+      } catch (jsonError) {
+        console.error(
+          "Backend returned non-JSON response:",
+          responseText
+        );
+
+        throw new Error(
+          "The registration server returned an invalid response. Please try again."
+        );
+      }
+
+      // =====================================================
+      // BACKEND ERROR
+      // =====================================================
 
       if (!response.ok) {
         throw new Error(
@@ -61,22 +125,22 @@ function Register() {
         );
       }
 
-      // ==========================================
+      // =====================================================
       // ACCOUNT CREATED
-      // VERIFICATION CODE SENT TO EMAIL
-      // ==========================================
+      // VERIFICATION CODE SENT
+      // =====================================================
 
       alert(
         "Account created successfully! A verification code has been sent to your email."
       );
 
-      // ==========================================
-      // GO TO VERIFICATION PAGE
-      // ==========================================
+      // =====================================================
+      // GO TO EMAIL VERIFICATION
+      // =====================================================
 
       navigate("/verify-email", {
         state: {
-          email: data.email || email,
+          email: data.email || cleanEmail,
         },
       });
 
@@ -88,7 +152,7 @@ function Register() {
 
       setError(
         error.message ||
-          "Unable to create account."
+          "Unable to create account. Please try again."
       );
 
     } finally {
@@ -96,28 +160,53 @@ function Register() {
     }
   };
 
+  // =====================================================
+  // RENDER
+  // =====================================================
+
   return (
     <main className="register-page">
 
       <div className="register-container">
 
+        {/* =========================
+            LOGO
+        ========================= */}
+
         <div className="register-logo">
-          📦
+          <img
+            src="/findparcel-icon.png"
+            alt="FindParcel"
+          />
         </div>
 
-        <h1>Create Account</h1>
+
+        {/* =========================
+            TITLE
+        ========================= */}
+
+        <h1>
+          Create Account
+        </h1>
 
         <p className="register-subtitle">
           Create your FindParcel account
         </p>
 
 
+        {/* =========================
+            REGISTRATION FORM
+        ========================= */}
+
         <form
           className="register-form"
           onSubmit={handleSubmit}
         >
 
-          {/* Full Name */}
+          {/* =========================
+              FULL NAME
+          ========================= */}
+
           <div className="register-form-group">
 
             <label htmlFor="fullName">
@@ -132,13 +221,17 @@ function Register() {
                 setFullName(e.target.value)
               }
               placeholder="Enter your full name"
+              autoComplete="name"
               required
             />
 
           </div>
 
 
-          {/* Email */}
+          {/* =========================
+              EMAIL
+          ========================= */}
+
           <div className="register-form-group">
 
             <label htmlFor="registerEmail">
@@ -153,13 +246,17 @@ function Register() {
                 setEmail(e.target.value)
               }
               placeholder="Enter your email"
+              autoComplete="email"
               required
             />
 
           </div>
 
 
-          {/* Password */}
+          {/* =========================
+              PASSWORD
+          ========================= */}
+
           <div className="register-form-group">
 
             <label htmlFor="registerPassword">
@@ -174,13 +271,17 @@ function Register() {
                 setPassword(e.target.value)
               }
               placeholder="Create a password"
+              autoComplete="new-password"
               required
             />
 
           </div>
 
 
-          {/* Confirm Password */}
+          {/* =========================
+              CONFIRM PASSWORD
+          ========================= */}
+
           <div className="register-form-group">
 
             <label htmlFor="confirmPassword">
@@ -197,13 +298,17 @@ function Register() {
                 )
               }
               placeholder="Confirm your password"
+              autoComplete="new-password"
               required
             />
 
           </div>
 
 
-          {/* Error */}
+          {/* =========================
+              ERROR
+          ========================= */}
+
           {error && (
             <div className="register-error">
               {error}
@@ -211,7 +316,10 @@ function Register() {
           )}
 
 
-          {/* Submit */}
+          {/* =========================
+              SUBMIT
+          ========================= */}
+
           <button
             type="submit"
             className="register-button"
@@ -224,6 +332,10 @@ function Register() {
 
         </form>
 
+
+        {/* =========================
+            LOGIN
+        ========================= */}
 
         <p className="register-login-text">
 
@@ -242,3 +354,4 @@ function Register() {
 }
 
 export default Register;
+

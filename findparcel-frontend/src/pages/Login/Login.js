@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
@@ -10,6 +11,12 @@ function Login() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // =====================================================
+  // PRODUCTION BACKEND
+  // =====================================================
+
+  const API_BASE_URL = "https://findparcel.onrender.com";
 
   // =====================================================
   // HANDLE LOGIN
@@ -42,7 +49,7 @@ function Login() {
       setLoading(true);
 
       const response = await fetch(
-        "https://findparcel.onrender.com/api/auth/login",
+        `${API_BASE_URL}/api/auth/login`,
         {
           method: "POST",
 
@@ -58,11 +65,10 @@ function Login() {
       );
 
       // =====================================================
-      // GET RESPONSE AS TEXT FIRST
+      // READ RESPONSE
       // =====================================================
 
-      const responseText =
-        await response.text();
+      const responseText = await response.text();
 
       let data;
 
@@ -75,7 +81,7 @@ function Login() {
         );
 
         throw new Error(
-          "Unable to connect to the login service. Please make sure your backend is running."
+          "The server returned an invalid response. Please try again."
         );
       }
 
@@ -164,10 +170,15 @@ function Login() {
         error.message ||
           "Unable to login. Please try again."
       );
+
     } finally {
       setLoading(false);
     }
   };
+
+  // =====================================================
+  // RENDER
+  // =====================================================
 
   return (
     <main className="login-page">
@@ -179,7 +190,10 @@ function Login() {
         ========================= */}
 
         <div className="login-logo">
-          📦
+          <img
+            src="/findparcel-icon.png"
+            alt="FindParcel"
+          />
         </div>
 
 
@@ -304,3 +318,4 @@ function Login() {
 }
 
 export default Login;
+

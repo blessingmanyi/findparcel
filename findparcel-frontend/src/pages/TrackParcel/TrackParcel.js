@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import {
   MapContainer,
@@ -12,6 +12,12 @@ import {
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./TrackParcel.css";
+
+// =====================================================
+// BACKEND URL
+// =====================================================
+
+const API_URL = "https://findparcel.onrender.com";
 
 // =====================================================
 // DEFAULT CITY COORDINATES
@@ -72,14 +78,8 @@ const calculateParcelProgress = (shipment) => {
     return 0;
   }
 
-  const createdDate = new Date(
-    shipment.createdAt
-  );
-
-  const deliveryDate = new Date(
-    shipment.estimatedDelivery
-  );
-
+  const createdDate = new Date(shipment.createdAt);
+  const deliveryDate = new Date(shipment.estimatedDelivery);
   const now = new Date();
 
   // ---------------------------------------------------
@@ -92,20 +92,15 @@ const calculateParcelProgress = (shipment) => {
   ) {
     return Math.max(
       0,
-      Math.min(
-        100,
-        Number(shipment.progress) || 0
-      )
+      Math.min(100, Number(shipment.progress) || 0)
     );
   }
 
   const totalTime =
-    deliveryDate.getTime() -
-    createdDate.getTime();
+    deliveryDate.getTime() - createdDate.getTime();
 
   const elapsedTime =
-    now.getTime() -
-    createdDate.getTime();
+    now.getTime() - createdDate.getTime();
 
   if (totalTime <= 0) {
     return 100;
@@ -139,18 +134,12 @@ const calculateParcelPosition = (shipment) => {
     return null;
   }
 
-  // ---------------------------------------------------
-  // DELIVERED = DESTINATION
-  // ---------------------------------------------------
-
+  // Delivered = destination
   if (shipment.status === "Delivered") {
     return destination;
   }
 
-  // ---------------------------------------------------
-  // REJECTED / CANCELLED = ORIGIN
-  // ---------------------------------------------------
-
+  // Rejected / Cancelled = origin
   if (
     shipment.status === "Rejected" ||
     shipment.status === "Cancelled"
@@ -158,14 +147,7 @@ const calculateParcelPosition = (shipment) => {
     return start;
   }
 
-  // ---------------------------------------------------
-  // DATE CALCULATION
-  // ---------------------------------------------------
-
-  const createdDate = new Date(
-    shipment.createdAt
-  );
-
+  const createdDate = new Date(shipment.createdAt);
   const deliveryDate = new Date(
     shipment.estimatedDelivery
   );
@@ -191,12 +173,10 @@ const calculateParcelPosition = (shipment) => {
 
     return [
       start[0] +
-        (destination[0] - start[0]) *
-          progress,
+        (destination[0] - start[0]) * progress,
 
       start[1] +
-        (destination[1] - start[1]) *
-          progress,
+        (destination[1] - start[1]) * progress,
     ];
   }
 
@@ -220,12 +200,10 @@ const calculateParcelPosition = (shipment) => {
 
   return [
     start[0] +
-      (destination[0] - start[0]) *
-        progress,
+      (destination[0] - start[0]) * progress,
 
     start[1] +
-      (destination[1] - start[1]) *
-        progress,
+      (destination[1] - start[1]) * progress,
   ];
 };
 
@@ -234,8 +212,7 @@ const calculateParcelPosition = (shipment) => {
 // =====================================================
 
 const parcelIcon = new L.DivIcon({
-  className:
-    "parcel-map-marker-wrapper",
+  className: "parcel-map-marker-wrapper",
 
   html: `
     <div class="parcel-map-marker">
@@ -244,7 +221,6 @@ const parcelIcon = new L.DivIcon({
   `,
 
   iconSize: [22, 22],
-
   iconAnchor: [11, 11],
 });
 
@@ -253,8 +229,7 @@ const parcelIcon = new L.DivIcon({
 // =====================================================
 
 const startIcon = new L.DivIcon({
-  className:
-    "map-location-marker-wrapper",
+  className: "map-location-marker-wrapper",
 
   html: `
     <div class="map-start-marker">
@@ -263,7 +238,6 @@ const startIcon = new L.DivIcon({
   `,
 
   iconSize: [30, 30],
-
   iconAnchor: [15, 15],
 });
 
@@ -272,8 +246,7 @@ const startIcon = new L.DivIcon({
 // =====================================================
 
 const destinationIcon = new L.DivIcon({
-  className:
-    "map-location-marker-wrapper",
+  className: "map-location-marker-wrapper",
 
   html: `
     <div class="map-destination-marker">
@@ -282,7 +255,6 @@ const destinationIcon = new L.DivIcon({
   `,
 
   iconSize: [30, 30],
-
   iconAnchor: [15, 15],
 });
 
@@ -329,8 +301,7 @@ function MapViewController({
 // =====================================================
 
 function TrackParcel() {
-  const [searchParams] =
-    useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const [trackingNumber, setTrackingNumber] =
     useState("");
@@ -354,36 +325,40 @@ function TrackParcel() {
   // FIND SHIPMENT
   // ===================================================
 
-  const findShipment = async (number) => {
-    const formattedNumber =
-      number.trim().toUpperCase();
+  const findShipment = useCallback(
+    async (number) => {
+      const formattedNumber =
+        number.trim().toUpperCase();
 
-    if (!formattedNumber) {
-      return null;
-    }
-
-    try {
-      const response = await fetch(
-        `https://findparcel.onrender.com/api/shipments/${formattedNumber}`
-      );
-
-      if (!response.ok) {
+      if (!formattedNumber) {
         return null;
       }
 
-      const data =
-        await response.json();
+      try {
+        const response = await fetch(
+          `${API_URL}/api/shipments/${encodeURIComponent(
+            formattedNumber
+          )}`
+        );
 
-      return data.shipment || data;
-    } catch (error) {
-      console.error(
-        "Error finding shipment:",
-        error
-      );
+        if (!response.ok) {
+          return null;
+        }
 
-      throw error;
-    }
-  };
+        const data = await response.json();
+
+        return data.shipment || data;
+      } catch (error) {
+        console.error(
+          "Error finding shipment:",
+          error
+        );
+
+        throw error;
+      }
+    },
+    []
+  );
 
   // ===================================================
   // TRACK PARCEL
@@ -398,9 +373,7 @@ function TrackParcel() {
     setLiveProgress(0);
 
     const formattedTracking =
-      trackingNumber
-        .trim()
-        .toUpperCase();
+      trackingNumber.trim().toUpperCase();
 
     if (!formattedTracking) {
       setError(
@@ -423,15 +396,18 @@ function TrackParcel() {
           formattedTracking
         );
 
-        setShipment(
-          foundShipment
-        );
+        setShipment(foundShipment);
       } else {
         setError(
           "Tracking number not found."
         );
       }
     } catch (error) {
+      console.error(
+        "Tracking error:",
+        error
+      );
+
       setError(
         "Unable to connect to the server. Please try again."
       );
@@ -453,9 +429,7 @@ function TrackParcel() {
     }
 
     const formattedTracking =
-      trackingFromUrl
-        .trim()
-        .toUpperCase();
+      trackingFromUrl.trim().toUpperCase();
 
     setTrackingNumber(
       formattedTracking
@@ -470,9 +444,7 @@ function TrackParcel() {
     findShipment(formattedTracking)
       .then((foundShipment) => {
         if (foundShipment) {
-          setShipment(
-            foundShipment
-          );
+          setShipment(foundShipment);
         } else {
           setError(
             "Tracking number not found."
@@ -480,7 +452,10 @@ function TrackParcel() {
         }
       })
       .catch((error) => {
-        console.error(error);
+        console.error(
+          "Automatic tracking error:",
+          error
+        );
 
         setError(
           "Unable to connect to the server. Please try again."
@@ -489,7 +464,10 @@ function TrackParcel() {
       .finally(() => {
         setLoading(false);
       });
-  }, [searchParams]);
+  }, [
+    searchParams,
+    findShipment,
+  ]);
 
   // ===================================================
   // MOVE PARCEL + UPDATE LIVE PROGRESS
@@ -511,19 +489,12 @@ function TrackParcel() {
           shipment
         );
 
-      setParcelPosition(
-        position
-      );
-
-      setLiveProgress(
-        progress
-      );
+      setParcelPosition(position);
+      setLiveProgress(progress);
     };
 
-    // Calculate immediately
     updateTracking();
 
-    // Update every second
     const interval =
       setInterval(
         updateTracking,
@@ -561,9 +532,7 @@ function TrackParcel() {
   return (
     <main className="track-page">
 
-      {/* =========================================
-          HEADER
-      ========================================= */}
+      {/* HEADER */}
 
       <header className="track-header">
 
@@ -586,10 +555,7 @@ function TrackParcel() {
 
       </header>
 
-
-      {/* =========================================
-          INTRODUCTION
-      ========================================= */}
+      {/* INTRODUCTION */}
 
       <section className="track-introduction">
 
@@ -605,10 +571,7 @@ function TrackParcel() {
 
       </section>
 
-
-      {/* =========================================
-          SEARCH
-      ========================================= */}
+      {/* SEARCH */}
 
       <section className="tracking-search-card">
 
@@ -655,10 +618,7 @@ function TrackParcel() {
 
       </section>
 
-
-      {/* =========================================
-          ERROR
-      ========================================= */}
+      {/* ERROR */}
 
       {error && (
         <div className="tracking-error">
@@ -666,10 +626,7 @@ function TrackParcel() {
         </div>
       )}
 
-
-      {/* =========================================
-          LOADING
-      ========================================= */}
+      {/* LOADING */}
 
       {loading && !shipment && (
         <div className="tracking-loading">
@@ -677,17 +634,12 @@ function TrackParcel() {
         </div>
       )}
 
-
-      {/* =========================================
-          SHIPMENT RESULTS
-      ========================================= */}
+      {/* SHIPMENT RESULTS */}
 
       {shipment && (
         <section className="shipment-results">
 
-          {/* =====================================
-              STATUS CARD
-          ===================================== */}
+          {/* STATUS CARD */}
 
           <div className="shipment-status-card">
 
@@ -716,10 +668,7 @@ function TrackParcel() {
 
           </div>
 
-
-          {/* =====================================
-              LIVE MAP
-          ===================================== */}
+          {/* LIVE MAP */}
 
           <div className="shipment-card tracking-map-card">
 
@@ -744,15 +693,12 @@ function TrackParcel() {
 
             </div>
 
-
             {hasMapCoordinates ? (
 
               <div className="tracking-map">
 
                 <MapContainer
-                  center={
-                    parcelPosition
-                  }
+                  center={parcelPosition}
                   zoom={10}
                   scrollWheelZoom={true}
                   className="parcel-map"
@@ -763,11 +709,8 @@ function TrackParcel() {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
 
-
                   <MapViewController
-                    start={
-                      startCoordinates
-                    }
+                    start={startCoordinates}
                     destination={
                       destinationCoordinates
                     }
@@ -776,8 +719,7 @@ function TrackParcel() {
                     }
                   />
 
-
-                  {/* Route */}
+                  {/* ROUTE */}
 
                   <Polyline
                     positions={[
@@ -791,8 +733,7 @@ function TrackParcel() {
                     }}
                   />
 
-
-                  {/* Starting city */}
+                  {/* START */}
 
                   <Marker
                     position={
@@ -815,8 +756,7 @@ function TrackParcel() {
 
                   </Marker>
 
-
-                  {/* Destination */}
+                  {/* DESTINATION */}
 
                   <Marker
                     position={
@@ -841,8 +781,7 @@ function TrackParcel() {
 
                   </Marker>
 
-
-                  {/* Moving parcel */}
+                  {/* MOVING PARCEL */}
 
                   <Marker
                     position={
@@ -898,10 +837,7 @@ function TrackParcel() {
 
             )}
 
-
-            {/* =====================================
-                MAP LEGEND
-            ===================================== */}
+            {/* MAP LEGEND */}
 
             {hasMapCoordinates && (
               <div className="map-legend">
@@ -941,10 +877,7 @@ function TrackParcel() {
 
           </div>
 
-
-          {/* =====================================
-              PROGRESS
-          ===================================== */}
+          {/* PROGRESS */}
 
           <div className="shipment-card">
 
@@ -968,7 +901,6 @@ function TrackParcel() {
 
             </div>
 
-
             <div className="progress-container">
 
               <div
@@ -990,7 +922,6 @@ function TrackParcel() {
 
               </div>
 
-
               <div className="progress-labels">
 
                 <span>
@@ -1011,10 +942,7 @@ function TrackParcel() {
 
           </div>
 
-
-          {/* =====================================
-              ROUTE
-          ===================================== */}
+          {/* ROUTE */}
 
           <div className="shipment-card">
 
@@ -1038,7 +966,6 @@ function TrackParcel() {
 
             </div>
 
-
             <div className="route-container">
 
               <div className="route-point">
@@ -1061,9 +988,7 @@ function TrackParcel() {
 
               </div>
 
-
               <div className="route-line"></div>
-
 
               <div className="route-point">
 
@@ -1089,10 +1014,7 @@ function TrackParcel() {
 
           </div>
 
-
-          {/* =====================================
-              PACKAGE INFORMATION
-          ===================================== */}
+          {/* PACKAGE INFORMATION */}
 
           <div className="shipment-card">
 
@@ -1116,7 +1038,6 @@ function TrackParcel() {
 
             </div>
 
-
             <div className="package-grid">
 
               <div className="package-item">
@@ -1126,11 +1047,11 @@ function TrackParcel() {
                 </span>
 
                 <strong>
-                  {shipment.packageInfo?.type}
+                  {shipment.packageInfo?.type ||
+                    "N/A"}
                 </strong>
 
               </div>
-
 
               <div className="package-item">
 
@@ -1139,7 +1060,9 @@ function TrackParcel() {
                 </span>
 
                 <strong>
-                  {shipment.packageInfo?.weight} kg
+                  {shipment.packageInfo?.weight
+                    ? `${shipment.packageInfo.weight} kg`
+                    : "N/A"}
                 </strong>
 
               </div>
@@ -1148,10 +1071,7 @@ function TrackParcel() {
 
           </div>
 
-
-          {/* =====================================
-              DELIVERY ESTIMATE
-          ===================================== */}
+          {/* DELIVERY ESTIMATE */}
 
           <div className="delivery-estimate">
 
@@ -1184,10 +1104,7 @@ function TrackParcel() {
 
           </div>
 
-
-          {/* =====================================
-              TIMELINE
-          ===================================== */}
+          {/* TIMELINE */}
 
           <div className="shipment-card">
 
@@ -1211,10 +1128,10 @@ function TrackParcel() {
 
             </div>
 
-
             <div className="timeline">
 
               {shipment.timeline &&
+                shipment.timeline.length > 0 &&
                 shipment.timeline.map(
                   (event, index) => (
 
@@ -1234,7 +1151,6 @@ function TrackParcel() {
                           : ""}
 
                       </div>
-
 
                       <div className="timeline-content">
 
@@ -1256,9 +1172,16 @@ function TrackParcel() {
                       </div>
 
                     </div>
-
                   )
                 )}
+
+              {(!shipment.timeline ||
+                shipment.timeline.length === 0) && (
+                <p>
+                  No tracking timeline is
+                  available yet.
+                </p>
+              )}
 
             </div>
 
