@@ -1,0 +1,162 @@
+.login-page {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 25px;
+
+  background: #f4f5ff;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 500px;
+
+  padding: 40px 25px;
+
+  background: #ffffff;
+
+  border-radius: 20px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.login-logo {
+  width: 70px;
+  height: 70px;
+
+  margin: 0 auto 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #3028c9;
+
+  border-radius: 50%;
+
+  font-size: 32px;
+}
+
+.login-container h1 {
+  margin: 0;
+
+  text-align: center;
+
+  font-size: clamp(28px, 5vw, 40px);
+
+  color: #222222;
+}
+
+.login-subtitle {
+  margin: 10px 0 30px;
+
+  text-align: center;
+
+  color: #777777;
+
+  font-size: 15px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+}
+
+.login-form-group {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.login-form-group label {
+  font-size: 14px;
+
+  font-weight: 600;
+
+  color: #333333;
+}
+
+.login-form-group input {
+  width: 100%;
+
+  padding: 14px 15px;
+
+  border: 1px solid #dddddd;
+
+  border-radius: 10px;
+
+  font-size: 15px;
+
+  outline: none;
+}
+
+.login-form-group input:focus {
+  border-color: #3028c9;
+}
+
+.login-button {
+  width: 100%;
+
+  padding: 15px;
+
+  margin-top: 5px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #3028c9;
+
+  color: #ffffff;
+
+  font-size: 16px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.login-button:hover {
+  background: #241eaa;
+}
+
+.login-register-text {
+  margin-top: 25px;
+
+  text-align: center;
+
+  color: #777777;
+
+  font-size: 14px;
+}
+
+.login-register-text a {
+  color: #3028c9;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-register-text a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 500px) {
+  .login-page {
+    padding: 15px;
+  }
+
+  .login-container {
+    padding: 35px 20px;
+    border-radius: 15px;
+  }
+}

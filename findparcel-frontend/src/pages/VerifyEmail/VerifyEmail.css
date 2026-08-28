@@ -1,0 +1,205 @@
+.verify-page {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  background: #f5f6ff;
+}
+
+.verify-container {
+  width: 100%;
+  max-width: 430px;
+
+  padding: 35px 25px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 10px 35px rgba(0, 0, 0, 0.06);
+
+  text-align: center;
+}
+
+.verify-logo {
+  width: 60px;
+  height: 60px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 18px;
+
+  background: #eeeeff;
+
+  border-radius: 16px;
+
+  font-size: 28px;
+}
+
+.verify-container h1 {
+  margin: 0;
+
+  color: #3028c9;
+
+  font-size: 26px;
+}
+
+.verify-subtitle {
+  margin: 10px auto 25px;
+
+  max-width: 330px;
+
+  color: #777777;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+.verify-form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 18px;
+
+  text-align: left;
+}
+
+.verify-form-group {
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+.verify-form-group label {
+  color: #333333;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+.verify-form-group input {
+  width: 100%;
+
+  padding: 13px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #dddddd;
+
+  border-radius: 9px;
+
+  outline: none;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  transition: 0.2s ease;
+}
+
+.verify-form-group input:focus {
+  border-color: #3028c9;
+
+  box-shadow:
+    0 0 0 3px rgba(48, 40, 201, 0.08);
+}
+
+.verify-error {
+  padding: 11px;
+
+  background: #ffecec;
+
+  border-radius: 8px;
+
+  color: #d62828;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+.verify-button {
+  width: 100%;
+
+  min-height: 48px;
+
+  border: none;
+
+  border-radius: 9px;
+
+  background: #3028c9;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.verify-button:hover {
+  background: #241eaa;
+}
+
+.verify-button:disabled {
+  opacity: 0.7;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================
+   DARK MODE
+========================= */
+
+body.dark-mode .verify-page {
+  background: #11121a;
+}
+
+body.dark-mode .verify-container {
+  background: #1c1d27;
+
+  box-shadow:
+    0 10px 35px rgba(0, 0, 0, 0.25);
+}
+
+body.dark-mode .verify-form-group label {
+  color: #eeeeee;
+}
+
+body.dark-mode .verify-form-group input {
+  background: #252633;
+
+  border-color: #3a3b49;
+
+  color: #ffffff;
+}
+
+body.dark-mode .verify-form-group input::placeholder {
+  color: #999999;
+}
+
+body.dark-mode .verify-subtitle {
+  color: #aaaaaa;
+}

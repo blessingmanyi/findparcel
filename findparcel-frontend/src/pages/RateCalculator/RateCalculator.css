@@ -1,0 +1,524 @@
+/* =========================
+   PAGE
+========================= */
+
+.rate-page {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  padding: 20px;
+
+  background: #f5f6ff;
+
+  color: #222222;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.rate-header {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  margin-bottom: 30px;
+}
+
+.rate-back-button {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  background: #ffffff;
+
+  border-radius: 10px;
+
+  color: #222222;
+
+  text-decoration: none;
+
+  font-size: 22px;
+
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.rate-header h1 {
+  margin: 0;
+
+  color: #3028c9;
+
+  font-size: 22px;
+}
+
+.rate-header p {
+  margin: 4px 0 0;
+
+  color: #777777;
+
+  font-size: 12px;
+}
+
+
+/* =========================
+   INTRODUCTION
+========================= */
+
+.rate-introduction {
+  margin-bottom: 25px;
+}
+
+.rate-introduction h2 {
+  margin: 0;
+
+  font-size: clamp(25px, 5vw, 34px);
+}
+
+.rate-introduction p {
+  max-width: 650px;
+
+  margin: 8px 0 0;
+
+  color: #777777;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================
+   CALCULATOR CARD
+========================= */
+
+.calculator-card {
+  padding: 22px;
+
+  margin-bottom: 20px;
+
+  background: #ffffff;
+
+  border-radius: 18px;
+
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+}
+
+.calculator-heading {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 25px;
+}
+
+.calculator-icon {
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background: #eeeeff;
+
+  border-radius: 12px;
+
+  font-size: 21px;
+}
+
+.calculator-heading h3 {
+  margin: 0;
+
+  font-size: 18px;
+}
+
+.calculator-heading p {
+  margin: 4px 0 0;
+
+  color: #777777;
+
+  font-size: 12px;
+}
+
+
+/* =========================
+   CALCULATOR GRID
+========================= */
+
+.calculator-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 18px;
+}
+
+.rate-form-group {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+.rate-form-group label {
+  color: #444444;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+.rate-form-group select,
+.rate-form-group input {
+  width: 100%;
+
+  padding: 13px 14px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #dddddd;
+
+  border-radius: 10px;
+
+  outline: none;
+
+  background: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 13px;
+}
+
+.rate-form-group select:focus,
+.rate-form-group input:focus {
+  border-color: #3028c9;
+}
+
+
+/* =========================
+   INPUT WITH UNIT
+========================= */
+
+.input-with-unit {
+  position: relative;
+}
+
+.input-with-unit input {
+  padding-right: 45px;
+}
+
+.input-with-unit span {
+  position: absolute;
+
+  right: 14px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #777777;
+
+  font-size: 12px;
+
+  pointer-events: none;
+}
+
+
+/* =========================
+   DELIVERY SPEED
+========================= */
+
+.speed-section {
+  margin-top: 25px;
+}
+
+.speed-section h3 {
+  margin: 0 0 15px;
+
+  font-size: 15px;
+}
+
+.speed-options {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.speed-option {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 16px;
+
+  border: 1px solid #dddddd;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.speed-option:hover {
+  border-color: #3028c9;
+}
+
+.speed-option input {
+  width: 18px;
+  height: 18px;
+
+  accent-color: #3028c9;
+}
+
+.speed-content {
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.speed-content strong {
+  font-size: 14px;
+}
+
+.speed-content span {
+  color: #777777;
+
+  font-size: 11px;
+}
+
+.speed-option b {
+  color: #3028c9;
+
+  font-size: 13px;
+}
+
+
+/* =========================
+   CALCULATE BUTTON
+========================= */
+
+.calculate-button {
+  width: 100%;
+
+  min-height: 50px;
+
+  margin-top: 25px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background: #3028c9;
+
+  color: #ffffff;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.calculate-button:hover {
+  background: #241eaa;
+}
+
+
+/* =========================
+   PRICE RESULT
+========================= */
+
+.price-result {
+  padding: 24px;
+
+  margin-bottom: 30px;
+
+  background: #3028c9;
+
+  color: #ffffff;
+
+  border-radius: 18px;
+}
+
+.price-result-top {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+}
+
+.price-result-top span {
+  font-size: 12px;
+
+  opacity: 0.8;
+}
+
+.price-result-top h2 {
+  margin: 5px 0 0;
+
+  font-size: 28px;
+}
+
+.price-icon {
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  background: rgba(255, 255, 255, 0.15);
+
+  border-radius: 14px;
+
+  font-size: 25px;
+}
+
+
+/* =========================
+   PRICE DETAILS
+========================= */
+
+.price-details {
+  margin-top: 22px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.price-details div {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+
+  font-size: 13px;
+}
+
+.price-details span {
+  opacity: 0.8;
+}
+
+
+/* =========================
+   CONTINUE BUTTON
+========================= */
+
+.continue-booking-button {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 48px;
+
+  margin-top: 20px;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #3028c9;
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (min-width: 768px) {
+  .rate-page {
+    max-width: 1000px;
+
+    margin: 0 auto;
+
+    padding: 40px;
+  }
+
+  .calculator-card,
+  .price-result {
+    padding: 28px;
+  }
+
+  .speed-options {
+    flex-direction: row;
+  }
+
+  .speed-option {
+    flex: 1;
+  }
+}
+
+
+/* =========================
+   DESKTOP
+========================= */
+
+@media (min-width: 1200px) {
+  .rate-page {
+    padding: 50px;
+  }
+}
+
+
+/* =========================
+   SMALL PHONES
+========================= */
+
+@media (max-width: 550px) {
+  .rate-page {
+    padding: 15px;
+  }
+
+  .calculator-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .price-result-top h2 {
+    font-size: 24px;
+  }
+
+  .speed-option {
+    align-items: flex-start;
+  }
+}

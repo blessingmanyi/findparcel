@@ -1,0 +1,659 @@
+/* =========================
+   PAGE
+========================= */
+
+.help-page {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  background: #f5f6ff;
+
+  color: #222222;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.help-header {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  margin-bottom: 30px;
+}
+
+.help-back-button {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  background: #ffffff;
+
+  border-radius: 10px;
+
+  color: #222222;
+
+  text-decoration: none;
+
+  font-size: 22px;
+
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.help-back-button:hover {
+  color: #3028c9;
+
+  background: #eeeeff;
+}
+
+.help-header h1 {
+  margin: 0;
+
+  color: #3028c9;
+
+  font-size: 22px;
+}
+
+.help-header p {
+  margin: 4px 0 0;
+
+  color: #777777;
+
+  font-size: 12px;
+}
+
+
+/* =========================
+   INTRODUCTION
+========================= */
+
+.help-introduction {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  margin-bottom: 25px;
+
+  padding: 22px;
+
+  background: #ffffff;
+
+  border-radius: 18px;
+
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+}
+
+.help-introduction-icon {
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  background: #eeeeff;
+
+  border-radius: 14px;
+
+  font-size: 25px;
+}
+
+.help-introduction h2 {
+  margin: 0;
+
+  font-size: 22px;
+}
+
+.help-introduction p {
+  margin: 6px 0 0;
+
+  color: #777777;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================
+   SUPPORT OPTIONS
+========================= */
+
+.help-options {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 15px;
+
+  margin-bottom: 30px;
+}
+
+.help-option-card {
+  display: flex;
+
+  flex-direction: column;
+
+  padding: 20px;
+
+  background: #ffffff;
+
+  border-radius: 16px;
+
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+}
+
+.help-option-icon {
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 15px;
+
+  background: #eeeeff;
+
+  border-radius: 12px;
+
+  font-size: 21px;
+}
+
+.help-option-content {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  flex: 1;
+}
+
+.help-option-content h3 {
+  margin: 0 0 6px;
+
+  font-size: 16px;
+}
+
+.help-option-content p {
+  margin: 0 0 15px;
+
+  color: #777777;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+.help-option-content button,
+.help-option-content a {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 38px;
+
+  padding: 8px 14px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #3028c9;
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.help-option-content button:hover,
+.help-option-content a:hover {
+  background: #241eaa;
+}
+
+
+/* =========================
+   FAQ
+========================= */
+
+.faq-section {
+  margin-bottom: 30px;
+}
+
+.section-heading {
+  margin-bottom: 15px;
+}
+
+.section-heading h2 {
+  margin: 0;
+
+  font-size: 21px;
+}
+
+.section-heading p {
+  margin: 6px 0 0;
+
+  color: #777777;
+
+  font-size: 12px;
+}
+
+.faq-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.faq-item {
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border-radius: 12px;
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.faq-question {
+  width: 100%;
+
+  min-height: 58px;
+
+  padding: 15px 18px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  border: none;
+
+  background: #ffffff;
+
+  color: #222222;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.faq-question:hover {
+  background: #fafaff;
+}
+
+.faq-question strong {
+  flex-shrink: 0;
+
+  color: #3028c9;
+
+  font-size: 20px;
+}
+
+.faq-answer {
+  padding: 0 18px 16px;
+
+  border-top: 1px solid #eeeeee;
+}
+
+.faq-answer p {
+  margin: 13px 0 0;
+
+  color: #777777;
+
+  font-size: 12px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================
+   CONTACT CARD
+========================= */
+
+.help-contact-card {
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  margin-bottom: 20px;
+
+  padding: 24px;
+
+  background: #3028c9;
+
+  color: #ffffff;
+
+  border-radius: 18px;
+}
+
+.help-contact-icon {
+  width: 55px;
+  height: 55px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  background: rgba(255, 255, 255, 0.15);
+
+  border-radius: 14px;
+
+  font-size: 25px;
+}
+
+.help-contact-content {
+  flex: 1;
+}
+
+.help-contact-content h2 {
+  margin: 0 0 5px;
+
+  color: #ffffff;
+
+  font-size: 20px;
+}
+
+.help-contact-content p {
+  margin: 0 0 15px;
+
+  color: rgba(255, 255, 255, 0.8);
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+.help-contact-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 38px;
+
+  padding: 8px 15px;
+
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #3028c9;
+
+  text-decoration: none;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+.help-contact-button:hover {
+  background: #eeeeff;
+}
+
+
+/* =========================
+   PROFILE BUTTON
+========================= */
+
+.help-profile-button {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 48px;
+
+  margin-bottom: 30px;
+
+  border-radius: 10px;
+
+  background: #eeeeff;
+
+  color: #3028c9;
+
+  text-decoration: none;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+.help-profile-button:hover {
+  background: #3028c9;
+
+  color: #ffffff;
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (min-width: 768px) {
+
+  .help-page {
+    max-width: 1000px;
+
+    margin: 0 auto;
+
+    padding: 40px;
+  }
+
+  .help-introduction {
+    padding: 28px;
+  }
+
+  .help-option-card {
+    padding: 24px;
+  }
+
+}
+
+
+/* =========================
+   DESKTOP
+========================= */
+
+@media (min-width: 1200px) {
+
+  .help-page {
+    padding: 50px;
+  }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+  .help-options {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* =========================
+   SMALL PHONES
+========================= */
+
+@media (max-width: 500px) {
+
+  .help-page {
+    padding: 15px;
+  }
+
+  .help-introduction {
+    padding: 18px;
+  }
+
+  .help-introduction-icon {
+    width: 48px;
+    height: 48px;
+
+    font-size: 21px;
+  }
+
+  .help-introduction h2 {
+    font-size: 19px;
+  }
+
+  .help-option-card {
+    padding: 18px;
+  }
+
+  .help-contact-card {
+    align-items: flex-start;
+
+    padding: 20px;
+  }
+
+}
+
+
+/* =========================
+   VERY SMALL PHONES
+========================= */
+
+@media (max-width: 360px) {
+
+  .help-header h1 {
+    font-size: 19px;
+  }
+
+  .help-introduction {
+    gap: 10px;
+  }
+
+  .help-introduction p {
+    font-size: 11px;
+  }
+
+  .help-contact-card {
+    flex-direction: column;
+  }
+
+} 
+
+/* =========================
+   SUPPORT CONTACT
+========================= */
+
+.support-contact-info {
+  width: 100%;
+
+  margin-top: 12px;
+
+  padding: 12px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+
+  background: #f5f6ff;
+
+  border: 1px solid #ddddff;
+
+  border-radius: 10px;
+}
+
+.support-contact-info span {
+  color: #777777;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+.support-contact-link {
+  display: inline-block;
+
+  color: #3028c9 !important;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  text-decoration: none;
+
+  word-break: break-word;
+
+  cursor: pointer;
+}
+
+.support-contact-link:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================
+   DARK MODE
+========================= */
+
+body.dark-mode .support-contact-info {
+  background: #12131b;
+
+  border-color: #363746;
+}
+
+body.dark-mode .support-contact-info span {
+  color: #aaa9b8;
+}
+
+body.dark-mode .support-contact-link {
+  color: #918bff !important;
+}

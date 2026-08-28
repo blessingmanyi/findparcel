@@ -1,0 +1,618 @@
+/* =====================================================
+   FINDPARCEL GLOBAL STYLES
+===================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+
+  background: #ffffff;
+  color: #222222;
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+
+/* =====================================================
+   GLOBAL TRANSITIONS
+===================================================== */
+
+body,
+body * {
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+/* =====================================================
+   GLOBAL LIGHT MODE
+===================================================== */
+
+body {
+  background: #ffffff;
+  color: #222222;
+}
+
+
+/* =====================================================
+   GLOBAL DARK MODE
+===================================================== */
+
+body.dark-mode {
+  background: #11121a;
+  color: #f1f1f7;
+}
+
+
+/* =====================================================
+   PAGE BACKGROUNDS
+===================================================== */
+
+body.dark-mode .home-page,
+body.dark-mode .profile-page,
+body.dark-mode .track-page,
+body.dark-mode .track-parcel-page,
+body.dark-mode .send-parcel-page,
+body.dark-mode .rate-calculator-page,
+body.dark-mode .shipments-page,
+body.dark-mode .my-shipments-page,
+body.dark-mode .notifications-page,
+body.dark-mode .addresses-page,
+body.dark-mode .settings-page,
+body.dark-mode .dashboard-page,
+body.dark-mode .help-page{
+  background: #11121a;
+  color: #f1f1f7;
+}
+
+
+/* =====================================================
+   COMMON CARDS
+===================================================== */
+
+body.dark-mode .card,
+body.dark-mode .profile-card,
+body.dark-mode .shipment-card,
+body.dark-mode .notification-card,
+body.dark-mode .address-card,
+body.dark-mode .calculator-card,
+body.dark-mode .send-parcel-card,
+body.dark-mode .settings-card,
+body.dark-mode .dashboard-stat-card,
+body.dark-mode .dashboard-section {
+  background: #191a24;
+  color: #f1f1f7;
+}
+
+
+/* =====================================================
+   COMMON HEADINGS
+===================================================== */
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6,
+body.dark-mode strong {
+  color: #f1f1f7;
+}
+
+
+/* =====================================================
+   COMMON TEXT
+===================================================== */
+
+body.dark-mode p {
+  color: #aaa9b8;
+}
+
+
+/*
+   Do NOT globally force every span to gray.
+
+   Many spans are used for:
+   - buttons
+   - icons
+   - badges
+   - status labels
+   - navigation
+*/
+
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+  background: #12131b;
+  color: #f1f1f7;
+  border-color: #363746;
+}
+
+
+/* =====================================================
+   INPUT PLACEHOLDERS
+===================================================== */
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+  color: #777687;
+}
+
+
+/* =====================================================
+   LINKS
+===================================================== */
+
+body.dark-mode a {
+  color: #918bff;
+}
+
+
+/* =====================================================
+   BUTTON TRANSITIONS
+===================================================== */
+
+body.dark-mode button {
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+
+/* =====================================================
+   DASHBOARD DARK MODE
+===================================================== */
+
+/* Main page */
+
+body.dark-mode .dashboard-page {
+  background: #11121a;
+  color: #f1f1f7;
+}
+
+
+/* Sidebar */
+
+body.dark-mode .dashboard-sidebar {
+  background: #181822;
+  border-right-color: #292936;
+}
+
+
+/* Logo section */
+
+body.dark-mode .sidebar-logo {
+  border-bottom-color: #292936;
+}
+
+body.dark-mode .sidebar-logo h1 {
+  color: #918bff;
+}
+
+body.dark-mode .sidebar-logo span {
+  color: #aaa9b8;
+}
+
+
+/* Sidebar user */
+
+body.dark-mode .sidebar-user {
+  background: #22222e;
+}
+
+body.dark-mode .sidebar-user strong {
+  color: #f1f1f7;
+}
+
+body.dark-mode .sidebar-user span {
+  color: #aaa9b8;
+}
+
+
+/* Navigation */
+
+body.dark-mode .dashboard-nav-link {
+  color: #b8b7c5;
+}
+
+body.dark-mode .dashboard-nav-link:hover {
+  background: #252532;
+  color: #918bff;
+}
+
+body.dark-mode .dashboard-nav-link.active {
+  background: #3028c9;
+  color: #ffffff;
+}
+
+body.dark-mode .dashboard-nav-link.active strong {
+  color: #ffffff;
+}
+
+
+/* Sidebar bottom */
+
+body.dark-mode .sidebar-bottom {
+  border-top-color: #292936;
+}
+
+body.dark-mode .dashboard-logout {
+  color: #b8b7c5;
+}
+
+body.dark-mode .dashboard-logout:hover {
+  background: #302020;
+  color: #ff6b6b;
+}
+
+
+/* Dashboard header */
+
+body.dark-mode .dashboard-header p {
+  color: #aaa9b8;
+}
+
+body.dark-mode .dashboard-icon-button {
+  background: #1c1c27;
+  color: #f1f1f7;
+}
+
+body.dark-mode .dashboard-profile-button {
+  color: #ffffff;
+}
+
+body.dark-mode .notification-dot {
+  border-color: #1c1c27;
+}
+
+
+/* Statistics */
+
+body.dark-mode .dashboard-stat-card {
+  background: #191a24;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+}
+
+body.dark-mode .dashboard-stat-icon {
+  background: #29283d;
+}
+
+body.dark-mode .dashboard-stat-card span {
+  color: #aaa9b8;
+}
+
+body.dark-mode .dashboard-stat-card strong {
+  color: #f1f1f7;
+}
+
+
+/* Dashboard sections */
+
+body.dark-mode .dashboard-section {
+  background: #191a24;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+}
+
+body.dark-mode .dashboard-section-heading p {
+  color: #aaa9b8;
+}
+
+body.dark-mode .dashboard-section-heading > a {
+  color: #918bff;
+}
+
+
+/* Empty shipment */
+
+body.dark-mode .dashboard-empty-state {
+  border-color: #393946;
+}
+
+body.dark-mode .dashboard-empty-icon {
+  background: #29283d;
+}
+
+body.dark-mode .dashboard-empty-state p {
+  color: #aaa9b8;
+}
+
+
+/* Quick actions */
+
+body.dark-mode .dashboard-action {
+  background: #242430;
+  color: #f1f1f7;
+}
+
+body.dark-mode .dashboard-action:hover {
+  background: #2d2d3b;
+}
+
+body.dark-mode .dashboard-action > span {
+  background: #30303d;
+}
+
+body.dark-mode .dashboard-action strong {
+  color: #f1f1f7;
+}
+
+body.dark-mode .dashboard-action small {
+  color: #aaa9b8;
+}
+
+
+/* Mobile bottom navigation */
+
+body.dark-mode .dashboard-mobile-nav {
+  background: #181822;
+  border-top-color: #292936;
+  box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .dashboard-mobile-nav a {
+  color: #aaa9b8;
+}
+
+body.dark-mode .dashboard-mobile-nav a:first-child {
+  color: #918bff;
+}
+
+body.dark-mode .dashboard-mobile-nav .mobile-add-button {
+  border-color: #11121a;
+}
+
+
+/* =====================================================
+   SETTINGS DARK MODE
+===================================================== */
+
+body.dark-mode .settings-header {
+  background: #181822;
+  border-bottom-color: #292936;
+}
+
+body.dark-mode .settings-header h1 {
+  color: #f1f1f7;
+}
+
+body.dark-mode .settings-header p {
+  color: #aaa9b8;
+}
+
+body.dark-mode .settings-back-button {
+  background: #29283d;
+  color: #918bff;
+}
+
+body.dark-mode .settings-back-button:hover {
+  background: #3028c9;
+  color: #ffffff;
+}
+
+body.dark-mode .settings-introduction h2 {
+  color: #f1f1f7;
+}
+
+body.dark-mode .settings-introduction p {
+  color: #aaa9b8;
+}
+
+body.dark-mode .settings-card {
+  border-color: #292936;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+}
+
+body.dark-mode .settings-card-icon {
+  background: #29283d;
+}
+
+body.dark-mode .settings-card-heading h3 {
+  color: #f1f1f7;
+}
+
+body.dark-mode .settings-card-heading p {
+  color: #aaa9b8;
+}
+
+body.dark-mode .settings-form-group label {
+  color: #d0cfda;
+}
+
+body.dark-mode .settings-form-group input {
+  background: #12131b;
+  color: #f1f1f7;
+  border-color: #363746;
+}
+
+body.dark-mode .settings-form-group input::placeholder {
+  color: #777687;
+}
+
+body.dark-mode .settings-option {
+  border-bottom-color: #292936;
+}
+
+body.dark-mode .settings-option-text strong {
+  color: #f1f1f7;
+}
+
+body.dark-mode .settings-option-text span {
+  color: #aaa9b8;
+}
+
+body.dark-mode .settings-toggle {
+  background: #41414d;
+}
+
+body.dark-mode .settings-toggle.active {
+  background: #3028c9;
+}
+
+body.dark-mode .logout-button {
+  background: #191a24;
+  border-color: #363746;
+  color: #918bff;
+}
+
+body.dark-mode .logout-button:hover {
+  background: #29283d;
+}
+
+body.dark-mode .delete-account-button {
+  background: #2a1919;
+  border-color: #5b3030;
+  color: #ff7777;
+}
+
+body.dark-mode .delete-account-button:hover {
+  background: #351d1d;
+}
+
+
+/* =====================================================
+   MOBILE DARK MODE
+===================================================== */
+
+body.dark-mode .dashboard-mobile-nav {
+  background: #181822;
+}
+
+body.dark-mode .dashboard-mobile-nav a {
+  color: #aaa9b8;
+}
+
+
+/* =====================================================
+   SELECTION
+===================================================== */
+
+body.dark-mode ::selection {
+  background: #3028c9;
+  color: #ffffff;
+}
+
+/* =====================================================
+   HELP & SUPPORT DARK MODE
+===================================================== */
+
+/* Help page background */
+body.dark-mode .help-page {
+  background: #11121a;
+  color: #f1f1f7;
+}
+
+
+/* Help header */
+body.dark-mode .help-header h1 {
+  color: #918bff;
+}
+
+body.dark-mode .help-header p {
+  color: #aaa9b8;
+}
+
+body.dark-mode .help-back-button {
+  background: #191a24;
+  color: #f1f1f7;
+}
+
+
+/* Introduction card */
+body.dark-mode .help-introduction {
+  background: #191a24;
+  color: #f1f1f7;
+}
+
+body.dark-mode .help-introduction-icon {
+  background: #24243a;
+}
+
+body.dark-mode .help-introduction p {
+  color: #aaa9b8;
+}
+
+
+/* Support cards */
+body.dark-mode .help-option-card {
+  background: #191a24;
+  color: #f1f1f7;
+}
+
+body.dark-mode .help-option-icon {
+  background: #24243a;
+}
+
+body.dark-mode .help-option-content p {
+  color: #aaa9b8;
+}
+
+
+/* FAQ */
+body.dark-mode .section-heading p {
+  color: #aaa9b8;
+}
+
+body.dark-mode .faq-item {
+  background: #191a24;
+}
+
+body.dark-mode .faq-question {
+  background: #191a24;
+  color: #f1f1f7;
+}
+
+body.dark-mode .faq-question:hover {
+  background: #20212c;
+}
+
+body.dark-mode .faq-question strong {
+  color: #918bff;
+}
+
+body.dark-mode .faq-answer {
+  border-color: #363746;
+}
+
+body.dark-mode .faq-answer p {
+  color: #aaa9b8;
+}
+
+
+/* Contact card stays purple */
+body.dark-mode .help-contact-card {
+  background: #3028c9;
+  color: #ffffff;
+}
+
+
+/* Back to Profile button */
+body.dark-mode .help-profile-button {
+  background: #24243a;
+  color: #918bff;
+}
+
+body.dark-mode .help-profile-button:hover {
+  background: #3028c9;
+  color: #ffffff;
+}

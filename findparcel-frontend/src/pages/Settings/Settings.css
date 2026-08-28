@@ -1,0 +1,668 @@
+/* =====================================================
+   SETTINGS PAGE
+===================================================== */
+
+.settings-page {
+  min-height: 100vh;
+  background: #f6f7fb;
+  padding-bottom: 60px;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 28px 7%;
+  background: #ffffff;
+  border-bottom: 1px solid #e7e7ef;
+}
+
+.settings-header h1 {
+  margin: 0;
+  color: #17152f;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.settings-header p {
+  margin: 5px 0 0;
+  color: #77758a;
+  font-size: 14px;
+}
+
+.settings-back-button {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: #f0efff;
+  color: #3028c9;
+  text-decoration: none;
+  font-size: 24px;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.settings-back-button:hover {
+  background: #3028c9;
+  color: #ffffff;
+}
+
+
+/* =====================================================
+   INTRODUCTION
+===================================================== */
+
+.settings-introduction {
+  width: min(1100px, 86%);
+  margin: 35px auto 25px;
+}
+
+.settings-introduction h2 {
+  margin: 0;
+  color: #17152f;
+  font-size: 25px;
+}
+
+.settings-introduction p {
+  margin: 8px 0 0;
+  color: #77758a;
+  font-size: 15px;
+}
+
+
+/* =====================================================
+   MAIN CONTAINER
+===================================================== */
+
+.settings-container {
+  width: min(1100px, 86%);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+
+/* =====================================================
+   SETTINGS CARD
+===================================================== */
+
+.settings-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px;
+  border: 1px solid #e8e8f0;
+  box-shadow: 0 5px 18px rgba(35, 31, 80, 0.04);
+}
+
+.settings-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.settings-card-icon {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: #f0efff;
+  font-size: 22px;
+}
+
+.settings-card-heading h3 {
+  margin: 0;
+  color: #1b1935;
+  font-size: 18px;
+}
+
+.settings-card-heading p {
+  margin: 5px 0 0;
+  color: #858296;
+  font-size: 13px;
+}
+
+
+/* =====================================================
+   FORM
+===================================================== */
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.settings-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.settings-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settings-form-group label {
+  color: #36334d;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.settings-form-group input {
+  width: 100%;
+  box-sizing: border-box;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid #dcdce7;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #24213e;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.settings-form-group input:focus {
+  border-color: #3028c9;
+  box-shadow: 0 0 0 3px rgba(48, 40, 201, 0.08);
+}
+
+.settings-form-group input::placeholder {
+  color: #aaa8b7;
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+.settings-message {
+  padding: 12px 15px;
+  border-radius: 9px;
+  background: #eef9f1;
+  color: #26733a;
+  font-size: 14px;
+  border: 1px solid #ccebd3;
+}
+
+
+/* =====================================================
+   PRIMARY BUTTON
+===================================================== */
+
+.settings-primary-button {
+  align-self: flex-start;
+  border: none;
+  border-radius: 10px;
+  padding: 13px 22px;
+  background: #3028c9;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.settings-primary-button:hover {
+  background: #241eaa;
+  transform: translateY(-1px);
+}
+
+
+/* =====================================================
+   NOTIFICATION OPTIONS
+===================================================== */
+
+.settings-options {
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 0;
+  border-bottom: 1px solid #eeeeF4;
+}
+
+.settings-option:first-child {
+  padding-top: 0;
+}
+
+.settings-option:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.settings-option-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.settings-option-text strong {
+  color: #292640;
+  font-size: 14px;
+}
+
+.settings-option-text span {
+  color: #898798;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+
+/* =====================================================
+   TOGGLE
+===================================================== */
+
+.settings-toggle {
+  position: relative;
+  width: 48px;
+  height: 26px;
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  border-radius: 20px;
+  background: #d6d5df;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.settings-toggle span {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  transition: 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.settings-toggle.active {
+  background: #3028c9;
+}
+
+.settings-toggle.active span {
+  transform: translateX(22px);
+}
+
+
+/* =====================================================
+   ACCOUNT
+===================================================== */
+
+.account-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.logout-button,
+.delete-account-button {
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.logout-button {
+  border: 1px solid #dcdbea;
+  background: #ffffff;
+  color: #3028c9;
+}
+
+.logout-button:hover {
+  background: #f0efff;
+}
+
+.delete-account-button {
+  border: 1px solid #f0caca;
+  background: #fff7f7;
+  color: #c63b3b;
+}
+
+.delete-account-button:hover {
+  background: #ffecec;
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 768px) {
+
+  .settings-header {
+    padding: 22px 5%;
+  }
+
+  .settings-header h1 {
+    font-size: 26px;
+  }
+
+  .settings-introduction,
+  .settings-container {
+    width: 90%;
+  }
+
+  .settings-card {
+    padding: 22px;
+  }
+
+  .settings-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 480px) {
+
+  .settings-page {
+    padding-bottom: 35px;
+  }
+
+  .settings-header {
+    gap: 12px;
+    padding: 18px 4%;
+  }
+
+  .settings-back-button {
+    width: 40px;
+    height: 40px;
+    font-size: 21px;
+  }
+
+  .settings-header h1 {
+    font-size: 23px;
+  }
+
+  .settings-header p {
+    font-size: 12px;
+  }
+
+  .settings-introduction {
+    width: 92%;
+    margin-top: 25px;
+  }
+
+  .settings-introduction h2 {
+    font-size: 21px;
+  }
+
+  .settings-introduction p {
+    font-size: 13px;
+  }
+
+  .settings-container {
+    width: 92%;
+    gap: 16px;
+  }
+
+  .settings-card {
+    padding: 18px;
+    border-radius: 15px;
+  }
+
+  .settings-card-heading {
+    gap: 11px;
+    margin-bottom: 20px;
+  }
+
+  .settings-card-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+    font-size: 19px;
+  }
+
+  .settings-card-heading h3 {
+    font-size: 16px;
+  }
+
+  .settings-card-heading p {
+    font-size: 12px;
+  }
+
+  .settings-option {
+    align-items: flex-start;
+  }
+
+  .settings-option-text {
+    max-width: calc(100% - 60px);
+  }
+
+  .settings-option-text strong {
+    font-size: 13px;
+  }
+
+  .settings-option-text span {
+    font-size: 12px;
+  }
+
+  .settings-primary-button {
+    width: 100%;
+  }
+
+  .account-actions {
+    flex-direction: column;
+  }
+
+  .logout-button,
+  .delete-account-button {
+    width: 100%;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+/* =====================================================
+   DARK MODE
+===================================================== */
+
+body.dark-mode {
+  background: #11111b;
+  color: #f4f4f8;
+}
+
+
+/* =====================================================
+   SETTINGS PAGE
+===================================================== */
+
+body.dark-mode .settings-page {
+  background: #11111b;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+body.dark-mode .settings-header {
+  background: #191925;
+  border-bottom-color: #2c2c3c;
+}
+
+body.dark-mode .settings-header h1 {
+  color: #f5f5fa;
+}
+
+body.dark-mode .settings-header p {
+  color: #aaa9ba;
+}
+
+body.dark-mode .settings-back-button {
+  background: #29274a;
+  color: #8d86ff;
+}
+
+body.dark-mode .settings-back-button:hover {
+  background: #3028c9;
+  color: #ffffff;
+}
+
+
+/* =====================================================
+   INTRODUCTION
+===================================================== */
+
+body.dark-mode .settings-introduction h2 {
+  color: #f5f5fa;
+}
+
+body.dark-mode .settings-introduction p {
+  color: #aaa9ba;
+}
+
+
+/* =====================================================
+   SETTINGS CARDS
+===================================================== */
+
+body.dark-mode .settings-card {
+  background: #191925;
+  border-color: #2c2c3c;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.25);
+}
+
+
+/* =====================================================
+   CARD HEADINGS
+===================================================== */
+
+body.dark-mode .settings-card-icon {
+  background: #29274a;
+}
+
+body.dark-mode .settings-card-heading h3 {
+  color: #f3f3f8;
+}
+
+body.dark-mode .settings-card-heading p {
+  color: #aaa9ba;
+}
+
+
+/* =====================================================
+   FORM
+===================================================== */
+
+body.dark-mode .settings-form-group label {
+  color: #d8d7e2;
+}
+
+body.dark-mode .settings-form-group input {
+  background: #22222f;
+  border-color: #3a3a4b;
+  color: #f5f5fa;
+}
+
+body.dark-mode .settings-form-group input:focus {
+  border-color: #625bdf;
+  box-shadow: 0 0 0 3px rgba(98, 91, 223, 0.15);
+}
+
+body.dark-mode .settings-form-group input::placeholder {
+  color: #777688;
+}
+
+
+/* =====================================================
+   NOTIFICATIONS
+===================================================== */
+
+body.dark-mode .settings-option {
+  border-bottom-color: #2c2c3c;
+}
+
+body.dark-mode .settings-option-text strong {
+  color: #e8e7ef;
+}
+
+body.dark-mode .settings-option-text span {
+  color: #a5a4b3;
+}
+
+
+/* =====================================================
+   TOGGLE
+===================================================== */
+
+body.dark-mode .settings-toggle {
+  background: #444454;
+}
+
+body.dark-mode .settings-toggle.active {
+  background: #5149d4;
+}
+
+
+/* =====================================================
+   ACCOUNT BUTTONS
+===================================================== */
+
+body.dark-mode .logout-button {
+  background: #22222f;
+  border-color: #3a3a4b;
+  color: #9a94ff;
+}
+
+body.dark-mode .logout-button:hover {
+  background: #29274a;
+}
+
+body.dark-mode .delete-account-button {
+  background: #2b1d1d;
+  border-color: #633838;
+  color: #ff7d7d;
+}
+
+body.dark-mode .delete-account-button:hover {
+  background: #3a2222;
+}
+
+
+/* =====================================================
+   SUCCESS / MESSAGE
+===================================================== */
+
+body.dark-mode .settings-message {
+  background: #1d3325;
+  border-color: #31583d;
+  color: #8fe0a5;
+}

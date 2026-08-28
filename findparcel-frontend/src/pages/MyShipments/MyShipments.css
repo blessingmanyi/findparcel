@@ -1,0 +1,951 @@
+/* =========================
+   PAGE
+========================= */
+
+.shipments-page {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  background: #f5f6ff;
+
+  color: #222222;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.shipments-header {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  margin-bottom: 30px;
+}
+
+.shipments-back-button {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  background: #ffffff;
+
+  border-radius: 10px;
+
+  color: #222222;
+
+  text-decoration: none;
+
+  font-size: 22px;
+
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+
+  transition: 0.2s ease;
+}
+
+.shipments-back-button:hover {
+  color: #3028c9;
+
+  background: #eeeeff;
+}
+
+.shipments-header h1 {
+  margin: 0;
+
+  color: #3028c9;
+
+  font-size: 22px;
+}
+
+.shipments-header p {
+  margin: 4px 0 0;
+
+  color: #777777;
+
+  font-size: 12px;
+}
+
+
+/* =========================
+   INTRODUCTION
+========================= */
+
+.shipments-introduction {
+  margin-bottom: 25px;
+}
+
+.shipments-introduction h2 {
+  margin: 0;
+
+  font-size: clamp(25px, 5vw, 34px);
+}
+
+.shipments-introduction p {
+  max-width: 650px;
+
+  margin: 8px 0 0;
+
+  color: #777777;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================
+   STATISTICS
+========================= */
+
+.shipment-stats {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 12px;
+
+  margin-bottom: 25px;
+}
+
+.stat-card {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 16px;
+
+  background: #ffffff;
+
+  border-radius: 14px;
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+}
+
+.stat-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  background: #eeeeff;
+
+  border-radius: 10px;
+
+  font-size: 19px;
+}
+
+.stat-card div:last-child {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.stat-card span {
+  color: #777777;
+
+  font-size: 10px;
+}
+
+.stat-card strong {
+  color: #222222;
+
+  font-size: 18px;
+}
+
+
+/* =========================
+   FILTER
+========================= */
+
+.shipment-filter {
+  display: flex;
+
+  gap: 8px;
+
+  overflow-x: auto;
+
+  margin-bottom: 20px;
+
+  padding-bottom: 5px;
+
+  scrollbar-width: none;
+}
+
+.shipment-filter::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-button {
+  padding: 9px 15px;
+
+  flex-shrink: 0;
+
+  border: 1px solid #dddddd;
+
+  border-radius: 20px;
+
+  background: #ffffff;
+
+  color: #666666;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.filter-button:hover {
+  border-color: #3028c9;
+
+  color: #3028c9;
+}
+
+.filter-button.active {
+  border-color: #3028c9;
+
+  background: #3028c9;
+
+  color: #ffffff;
+}
+
+
+/* =========================
+   SHIPMENT LIST
+========================= */
+
+.shipment-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+}
+
+.shipment-item {
+  padding: 20px;
+
+  background: #ffffff;
+
+  border-radius: 16px;
+
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+
+  transition: transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.shipment-item:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+}
+
+
+/* =========================
+   SHIPMENT HEADER
+========================= */
+
+.shipment-item-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 10px;
+
+  padding-bottom: 18px;
+
+  border-bottom: 1px solid #eeeeee;
+}
+
+.shipment-number {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  min-width: 0;
+}
+
+.shipment-box-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  background: #eeeeff;
+
+  border-radius: 10px;
+
+  font-size: 18px;
+}
+
+.shipment-number div:last-child {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+
+  min-width: 0;
+}
+
+.shipment-number span {
+  color: #777777;
+
+  font-size: 10px;
+}
+
+.shipment-number strong {
+  font-size: 13px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* =========================
+   STATUS BADGES
+========================= */
+
+.shipment-badge {
+  padding: 6px 10px;
+
+  flex-shrink: 0;
+
+  border-radius: 20px;
+
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+.shipment-badge.transit {
+  background: #eeeeff;
+
+  color: #3028c9;
+}
+
+.shipment-badge.delivered {
+  background: #e8f7ed;
+
+  color: #218838;
+}
+
+.shipment-badge.pending {
+  background: #fff4df;
+
+  color: #a66a00;
+}
+
+
+/* =========================
+   ROUTE
+========================= */
+
+.shipment-route {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 10px;
+
+  padding: 20px 0;
+}
+
+.location {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+
+  min-width: 60px;
+}
+
+.location span {
+  color: #999999;
+
+  font-size: 10px;
+}
+
+.location strong {
+  font-size: 14px;
+}
+
+.route-line {
+  flex: 1;
+
+  min-width: 30px;
+
+  color: #3028c9;
+
+  text-align: center;
+
+  font-size: 12px;
+
+  overflow: hidden;
+
+  white-space: nowrap;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.shipment-footer {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr auto;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding-top: 15px;
+
+  border-top: 1px solid #eeeeee;
+}
+
+.shipment-footer div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+
+  min-width: 0;
+}
+
+.shipment-footer span {
+  color: #999999;
+
+  font-size: 10px;
+}
+
+.shipment-footer strong {
+  font-size: 11px;
+}
+
+.view-shipment-button {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 60px;
+
+  padding: 9px 15px;
+
+  border-radius: 8px;
+
+  background: #eeeeff;
+
+  color: #3028c9;
+
+  text-decoration: none;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  transition: 0.2s ease;
+}
+
+.view-shipment-button:hover {
+  background: #3028c9;
+
+  color: #ffffff;
+}
+
+
+/* =========================
+   NO SHIPMENTS
+========================= */
+
+.no-shipments {
+  padding: 40px 20px;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border-radius: 16px;
+
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+}
+
+.no-shipments-icon {
+  font-size: 40px;
+
+  margin-bottom: 10px;
+}
+
+.no-shipments h3 {
+  margin: 0 0 8px;
+
+  font-size: 18px;
+}
+
+.no-shipments p {
+  margin: 0 auto 18px;
+
+  max-width: 350px;
+
+  color: #777777;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+.no-shipments button {
+  padding: 10px 16px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #3028c9;
+
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.no-shipments button:hover {
+  background: #241eaa;
+}
+
+
+/* =========================
+   CREATE SHIPMENT
+========================= */
+
+.create-shipment-button {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 50px;
+
+  margin-top: 20px;
+
+  margin-bottom: 30px;
+
+  border-radius: 11px;
+
+  background: #3028c9;
+
+  color: #ffffff;
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  transition: 0.2s ease;
+}
+
+.create-shipment-button:hover {
+  background: #241eaa;
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (min-width: 768px) {
+
+  .shipments-page {
+    max-width: 1000px;
+
+    margin: 0 auto;
+
+    padding: 40px;
+  }
+
+  .shipment-stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .shipment-item {
+    padding: 25px;
+  }
+
+}
+
+
+/* =========================
+   DESKTOP
+========================= */
+
+@media (min-width: 1200px) {
+
+  .shipments-page {
+    padding: 50px;
+  }
+
+}
+
+
+/* =========================
+   SMALL PHONES
+========================= */
+
+@media (max-width: 500px) {
+
+  .shipments-page {
+    padding: 15px;
+  }
+
+  .shipment-item-header {
+    align-items: flex-start;
+  }
+
+  .shipment-route {
+    gap: 5px;
+  }
+
+  .route-line {
+    font-size: 9px;
+  }
+
+  .shipment-footer {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .view-shipment-button {
+    grid-column: 1 / -1;
+
+    width: 100%;
+  }
+
+}
+
+
+/* =========================
+   VERY SMALL PHONES
+========================= */
+
+@media (max-width: 360px) {
+
+  .shipments-header h1 {
+    font-size: 19px;
+  }
+
+  .shipments-introduction h2 {
+    font-size: 23px;
+  }
+
+  .shipment-item {
+    padding: 16px;
+  }
+
+  .shipment-item-header {
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .shipment-route {
+    display: grid;
+
+    grid-template-columns: 1fr;
+
+    gap: 8px;
+  }
+
+  .route-line {
+    width: 100%;
+
+    text-align: left;
+  }
+
+}
+
+
+
+/* =====================================================
+   FINDPARCEL DARK MODE - MY SHIPMENTS
+===================================================== */
+
+/* =========================
+   PAGE
+========================= */
+
+body.dark-mode .shipments-page {
+  background: #11121a;
+  color: #f1f1f7;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+body.dark-mode .shipments-header h1 {
+  color: #918bff;
+}
+
+body.dark-mode .shipments-header p {
+  color: #aaa9b8;
+}
+
+body.dark-mode .shipments-back-button {
+  background: #191a24;
+  color: #f1f1f7;
+  border: 1px solid #2d2e3a;
+}
+
+body.dark-mode .shipments-back-button:hover {
+  background: #242535;
+  color: #918bff;
+}
+
+
+/* =========================
+   INTRODUCTION
+========================= */
+
+body.dark-mode .shipments-introduction h2 {
+  color: #f1f1f7;
+}
+
+body.dark-mode .shipments-introduction p {
+  color: #aaa9b8;
+}
+
+
+/* =========================
+   STATISTICS CARDS
+========================= */
+
+body.dark-mode .stat-card {
+  background: #191a24;
+  color: #f1f1f7;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+}
+
+body.dark-mode .stat-icon {
+  background: #25264a;
+}
+
+body.dark-mode .stat-card span {
+  color: #aaa9b8;
+}
+
+body.dark-mode .stat-card strong {
+  color: #f1f1f7;
+}
+
+
+/* =========================
+   FILTER BUTTONS
+========================= */
+
+body.dark-mode .filter-button {
+  background: #191a24;
+  border-color: #363746;
+  color: #aaa9b8;
+}
+
+body.dark-mode .filter-button:hover {
+  border-color: #3028c9;
+  color: #918bff;
+}
+
+body.dark-mode .filter-button.active {
+  background: #3028c9;
+  border-color: #3028c9;
+  color: #ffffff;
+}
+
+
+/* =========================
+   SHIPMENT CARDS
+========================= */
+
+body.dark-mode .shipment-item {
+  background: #191a24;
+  color: #f1f1f7;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+}
+
+body.dark-mode .shipment-item:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+}
+
+
+/* =========================
+   SHIPMENT HEADER
+========================= */
+
+body.dark-mode .shipment-item-header {
+  border-bottom-color: #363746;
+}
+
+body.dark-mode .shipment-box-icon {
+  background: #25264a;
+}
+
+body.dark-mode .shipment-number span {
+  color: #aaa9b8;
+}
+
+body.dark-mode .shipment-number strong {
+  color: #f1f1f7;
+}
+
+
+/* =========================
+   STATUS BADGES
+========================= */
+
+body.dark-mode .shipment-badge.transit {
+  background: #25264a;
+  color: #918bff;
+}
+
+body.dark-mode .shipment-badge.delivered {
+  background: #193025;
+  color: #8ee6aa;
+}
+
+body.dark-mode .shipment-badge.pending {
+  background: #3a2d18;
+  color: #f2bd67;
+}
+
+
+/* =========================
+   ROUTE
+========================= */
+
+body.dark-mode .location span {
+  color: #777687;
+}
+
+body.dark-mode .location strong {
+  color: #f1f1f7;
+}
+
+body.dark-mode .route-line {
+  color: #918bff;
+}
+
+
+/* =========================
+   SHIPMENT FOOTER
+========================= */
+
+body.dark-mode .shipment-footer {
+  border-top-color: #363746;
+}
+
+body.dark-mode .shipment-footer span {
+  color: #777687;
+}
+
+body.dark-mode .shipment-footer strong {
+  color: #f1f1f7;
+}
+
+
+/* =========================
+   VIEW BUTTON
+========================= */
+
+body.dark-mode .view-shipment-button {
+  background: #25264a;
+  color: #918bff;
+}
+
+body.dark-mode .view-shipment-button:hover {
+  background: #3028c9;
+  color: #ffffff;
+}
+
+
+/* =========================
+   NO SHIPMENTS
+========================= */
+
+body.dark-mode .no-shipments {
+  background: #191a24;
+  color: #f1f1f7;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+}
+
+body.dark-mode .no-shipments h3 {
+  color: #f1f1f7;
+}
+
+body.dark-mode .no-shipments p {
+  color: #aaa9b8;
+}
+
+
+/* =========================
+   CREATE SHIPMENT BUTTON
+========================= */
+
+body.dark-mode .create-shipment-button {
+  background: #3028c9;
+  color: #ffffff;
+}
+
+body.dark-mode .create-shipment-button:hover {
+  background: #4037df;
+}
