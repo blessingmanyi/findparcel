@@ -1,5 +1,12 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+import {
+  Link,
+  useNavigate,
+} from "react-router-dom";
 import "./Home.css";
 
 function Home() {
@@ -9,17 +16,24 @@ function Home() {
   // CUSTOMER
   // =====================================================
 
-  const savedUser = localStorage.getItem("findparcelUser");
+  const savedUser =
+    localStorage.getItem("findparcelUser");
 
   let user = null;
 
   try {
-    user = savedUser ? JSON.parse(savedUser) : null;
+    user = savedUser
+      ? JSON.parse(savedUser)
+      : null;
   } catch (error) {
-    console.error("Invalid customer data:", error);
+    console.error(
+      "Invalid customer data:",
+      error
+    );
   }
 
-  const customerName = user?.fullName || "Customer";
+  const customerName =
+    user?.fullName || "Customer";
 
   const customerId =
     user?._id ||
@@ -32,96 +46,112 @@ function Home() {
   // STATE
   // =====================================================
 
-  const [shipments, setShipments] = useState([]);
-  const [unreadNotifications, setUnreadNotifications] =
-    useState(0);
+  const [shipments, setShipments] =
+    useState([]);
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [
+    unreadNotifications,
+    setUnreadNotifications,
+  ] = useState(0);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
 
 
   // =====================================================
   // FETCH CUSTOMER SHIPMENTS
   // =====================================================
 
-  const fetchShipments = async () => {
-    if (!customerId) {
-      setError(
-        "Unable to identify your account. Please log in again."
-      );
-
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        `http://findparcel.onrender.com/api/shipments/customer/${customerId}`
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.message ||
-            "Failed to load your shipments."
+  const fetchShipments = useCallback(
+    async () => {
+      if (!customerId) {
+        setError(
+          "Unable to identify your account. Please log in again."
         );
+
+        setLoading(false);
+        return;
       }
 
-      setShipments(
-        Array.isArray(data) ? data : []
-      );
+      try {
+        const response = await fetch(
+          `https://findparcel-backend.onrender.com/api/shipments/customer/${customerId}`
+        );
 
-    } catch (error) {
-      console.error(
-        "Dashboard shipments error:",
-        error
-      );
+        const data =
+          await response.json();
 
-      setError(
-        error.message ||
-          "Unable to load your shipments."
-      );
-    }
-  };
+        if (!response.ok) {
+          throw new Error(
+            data.message ||
+              "Failed to load your shipments."
+          );
+        }
+
+        setShipments(
+          Array.isArray(data)
+            ? data
+            : []
+        );
+      } catch (error) {
+        console.error(
+          "Dashboard shipments error:",
+          error
+        );
+
+        setError(
+          error.message ||
+            "Unable to load your shipments."
+        );
+      }
+    },
+    [customerId]
+  );
 
 
   // =====================================================
   // FETCH UNREAD NOTIFICATIONS
   // =====================================================
 
-  const fetchUnreadNotifications = async () => {
-    if (!customerId) {
-      return;
-    }
+  const fetchUnreadNotifications =
+    useCallback(
+      async () => {
+        if (!customerId) {
+          return;
+        }
 
-    try {
-      const response = await fetch(
-        `http://findparcel.onrender.com/api/notifications/customer/${customerId}/unread-count`
-      );
+        try {
+          const response = await fetch(
+            `https://findparcel-backend.onrender.com/api/notifications/customer/${customerId}/unread-count`
+          );
 
-      const data = await response.json();
+          const data =
+            await response.json();
 
-      if (!response.ok) {
-        throw new Error(
-          data.message ||
-            "Failed to load notifications."
-        );
-      }
+          if (!response.ok) {
+            throw new Error(
+              data.message ||
+                "Failed to load notifications."
+            );
+          }
 
-      setUnreadNotifications(
-        Number(data.count) || 0
-      );
+          setUnreadNotifications(
+            Number(data.count) || 0
+          );
+        } catch (error) {
+          console.error(
+            "Notification count error:",
+            error
+          );
 
-    } catch (error) {
-      console.error(
-        "Notification count error:",
-        error
-      );
-
-      setUnreadNotifications(0);
-    }
-  };
+          setUnreadNotifications(0);
+        }
+      },
+      [customerId]
+    );
 
 
   // =====================================================
@@ -129,57 +159,72 @@ function Home() {
   // =====================================================
 
   useEffect(() => {
-    const loadDashboard = async () => {
-      setLoading(true);
-      setError("");
+    const loadDashboard =
+      async () => {
+        setLoading(true);
+        setError("");
 
-      await Promise.all([
-        fetchShipments(),
-        fetchUnreadNotifications(),
-      ]);
+        await Promise.all([
+          fetchShipments(),
+          fetchUnreadNotifications(),
+        ]);
 
-      setLoading(false);
-    };
+        setLoading(false);
+      };
 
     loadDashboard();
-  }, [customerId]);
+  }, [
+    customerId,
+    fetchShipments,
+    fetchUnreadNotifications,
+  ]);
 
 
   // =====================================================
   // STATISTICS
   // =====================================================
 
-  const totalShipments = shipments.length;
+  const totalShipments =
+    shipments.length;
 
-  const pendingCount = shipments.filter(
-    (shipment) =>
-      shipment.status === "Pending"
-  ).length;
+  const pendingCount =
+    shipments.filter(
+      (shipment) =>
+        shipment.status === "Pending"
+    ).length;
 
-  const inTransitCount = shipments.filter(
-    (shipment) =>
-      shipment.status === "In Transit" ||
-      shipment.status === "Out for Delivery"
-  ).length;
+  const inTransitCount =
+    shipments.filter(
+      (shipment) =>
+        shipment.status ===
+          "In Transit" ||
+        shipment.status ===
+          "Out for Delivery"
+    ).length;
 
-  const deliveredCount = shipments.filter(
-    (shipment) =>
-      shipment.status === "Delivered"
-  ).length;
+  const deliveredCount =
+    shipments.filter(
+      (shipment) =>
+        shipment.status ===
+        "Delivered"
+    ).length;
 
 
   // =====================================================
   // RECENT SHIPMENTS
   // =====================================================
 
-  const recentShipments = shipments.slice(0, 3);
+  const recentShipments =
+    shipments.slice(0, 3);
 
 
   // =====================================================
   // STATUS CLASS
   // =====================================================
 
-  const getStatusClass = (status) => {
+  const getStatusClass = (
+    status
+  ) => {
     switch (status) {
       case "In Transit":
         return "transit";
@@ -234,11 +279,17 @@ function Home() {
         <div className="sidebar-logo">
 
           <div className="sidebar-logo-icon">
-            📦
+            <img
+              src="/findparcel-icon.png"
+              alt="FindParcel"
+            />
           </div>
 
           <div>
-            <h1>FindParcel</h1>
+            <h1>
+              FindParcel
+            </h1>
+
             <span>
               Send • Track • Receive
             </span>
@@ -277,7 +328,9 @@ function Home() {
             className="dashboard-nav-link active"
           >
             <span>🏠</span>
-            <strong>Dashboard</strong>
+            <strong>
+              Dashboard
+            </strong>
           </Link>
 
 
@@ -286,7 +339,9 @@ function Home() {
             className="dashboard-nav-link"
           >
             <span>📦</span>
-            <strong>My Shipments</strong>
+            <strong>
+              My Shipments
+            </strong>
           </Link>
 
 
@@ -295,7 +350,9 @@ function Home() {
             className="dashboard-nav-link"
           >
             <span>🔍</span>
-            <strong>Track Parcel</strong>
+            <strong>
+              Track Parcel
+            </strong>
           </Link>
 
 
@@ -304,7 +361,9 @@ function Home() {
             className="dashboard-nav-link"
           >
             <span>➕</span>
-            <strong>Send Parcel</strong>
+            <strong>
+              Send Parcel
+            </strong>
           </Link>
 
 
@@ -313,7 +372,9 @@ function Home() {
             className="dashboard-nav-link"
           >
             <span>💰</span>
-            <strong>Rate Calculator</strong>
+            <strong>
+              Rate Calculator
+            </strong>
           </Link>
 
 
@@ -327,7 +388,8 @@ function Home() {
               Notifications
             </strong>
 
-            {unreadNotifications > 0 && (
+            {unreadNotifications >
+              0 && (
               <span className="sidebar-notification-badge">
                 {unreadNotifications}
               </span>
@@ -347,7 +409,10 @@ function Home() {
             className="dashboard-nav-link"
           >
             <span>👤</span>
-            <strong>Profile</strong>
+
+            <strong>
+              Profile
+            </strong>
           </Link>
 
 
@@ -357,7 +422,10 @@ function Home() {
             onClick={handleLogout}
           >
             <span>🚪</span>
-            <strong>Logout</strong>
+
+            <strong>
+              Logout
+            </strong>
           </button>
 
         </div>
@@ -371,7 +439,6 @@ function Home() {
 
       <section className="dashboard-main">
 
-
         {/* Header */}
 
         <header className="dashboard-header">
@@ -383,7 +450,8 @@ function Home() {
             </p>
 
             <h1>
-              Welcome back, {customerName} 👋
+              Welcome back,{" "}
+              {customerName} 👋
             </h1>
 
           </div>
@@ -400,7 +468,8 @@ function Home() {
             >
               🔔
 
-              {unreadNotifications > 0 && (
+              {unreadNotifications >
+                0 && (
                 <span className="notification-dot"></span>
               )}
 
@@ -439,8 +508,9 @@ function Home() {
             </h2>
 
             <span>
-              Enter your tracking number to see
-              your shipment progress.
+              Enter your tracking number
+              to see your shipment
+              progress.
             </span>
 
           </div>
@@ -490,6 +560,7 @@ function Home() {
             </div>
 
             <div>
+
               <span>
                 Total Shipments
               </span>
@@ -499,6 +570,7 @@ function Home() {
                   ? "..."
                   : totalShipments}
               </strong>
+
             </div>
 
           </div>
@@ -511,6 +583,7 @@ function Home() {
             </div>
 
             <div>
+
               <span>
                 Pending
               </span>
@@ -520,6 +593,7 @@ function Home() {
                   ? "..."
                   : pendingCount}
               </strong>
+
             </div>
 
           </div>
@@ -532,6 +606,7 @@ function Home() {
             </div>
 
             <div>
+
               <span>
                 In Transit
               </span>
@@ -541,6 +616,7 @@ function Home() {
                   ? "..."
                   : inTransitCount}
               </strong>
+
             </div>
 
           </div>
@@ -553,6 +629,7 @@ function Home() {
             </div>
 
             <div>
+
               <span>
                 Delivered
               </span>
@@ -562,6 +639,7 @@ function Home() {
                   ? "..."
                   : deliveredCount}
               </strong>
+
             </div>
 
           </div>
@@ -574,7 +652,6 @@ function Home() {
         ================================= */}
 
         <div className="dashboard-content-grid">
-
 
           {/* =================================
               RECENT SHIPMENTS
@@ -591,7 +668,8 @@ function Home() {
                 </h2>
 
                 <p>
-                  Your latest shipment activity
+                  Your latest shipment
+                  activity
                 </p>
 
               </div>
@@ -617,8 +695,9 @@ function Home() {
                 </h3>
 
                 <p>
-                  Please wait while we load
-                  your shipment information.
+                  Please wait while we
+                  load your shipment
+                  information.
                 </p>
 
               </div>
@@ -629,7 +708,8 @@ function Home() {
 
             {!loading &&
               !error &&
-              recentShipments.length === 0 && (
+              recentShipments.length ===
+                0 && (
 
                 <div className="dashboard-empty-state">
 
@@ -642,9 +722,9 @@ function Home() {
                   </h3>
 
                   <p>
-                    Your recent shipments will
-                    appear here after you create
-                    a shipment.
+                    Your recent shipments
+                    will appear here after
+                    you create a shipment.
                   </p>
 
                   <Link
@@ -662,7 +742,8 @@ function Home() {
             {/* Real Shipments */}
 
             {!loading &&
-              recentShipments.length > 0 && (
+              recentShipments.length >
+                0 && (
 
                 <div className="dashboard-recent-shipments">
 
@@ -685,7 +766,9 @@ function Home() {
                             </span>
 
                             <strong>
-                              {shipment.trackingNumber}
+                              {
+                                shipment.trackingNumber
+                              }
                             </strong>
 
                           </div>
@@ -752,7 +835,8 @@ function Home() {
 
                             <strong>
                               {Number(
-                                shipment.shippingPrice || 0
+                                shipment.shippingPrice ||
+                                  0
                               ).toLocaleString()}{" "}
                               FCFA
                             </strong>
@@ -905,9 +989,11 @@ function Home() {
                   </strong>
 
                   <small>
-                    {unreadNotifications > 0
+                    {unreadNotifications >
+                    0
                       ? `${unreadNotifications} unread notification${
-                          unreadNotifications > 1
+                          unreadNotifications >
+                          1
                             ? "s"
                             : ""
                         }`
@@ -935,13 +1021,17 @@ function Home() {
 
         <Link to="/home">
           <span>🏠</span>
-          <small>Dashboard</small>
+          <small>
+            Dashboard
+          </small>
         </Link>
 
 
         <Link to="/shipments">
           <span>📦</span>
-          <small>Shipments</small>
+          <small>
+            Shipments
+          </small>
         </Link>
 
 
@@ -955,9 +1045,13 @@ function Home() {
 
         <Link to="/notifications">
           <span>🔔</span>
-          <small>Notifications</small>
 
-          {unreadNotifications > 0 && (
+          <small>
+            Notifications
+          </small>
+
+          {unreadNotifications >
+            0 && (
             <span className="mobile-notification-badge">
               {unreadNotifications}
             </span>
@@ -968,7 +1062,10 @@ function Home() {
 
         <Link to="/profile">
           <span>👤</span>
-          <small>Profile</small>
+
+          <small>
+            Profile
+          </small>
         </Link>
 
       </nav>

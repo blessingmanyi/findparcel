@@ -1,22 +1,19 @@
-import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "./MyShipments.css";
 
 function MyShipments() {
   const [shipments, setShipments] = useState([]);
-  const [activeFilter, setActiveFilter] =
-    useState("All");
+  const [activeFilter, setActiveFilter] = useState("All");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const location = useLocation();
-
-  // =========================
+  // =====================================================
   // GET LOGGED-IN CUSTOMER
-  // =========================
+  // =====================================================
+
   const getCustomerId = () => {
-    const savedUser =
-      localStorage.getItem("findparcelUser");
+    const savedUser = localStorage.getItem("findparcelUser");
 
     if (!savedUser) {
       return null;
@@ -32,19 +29,16 @@ function MyShipments() {
         null
       );
     } catch (error) {
-      console.error(
-        "Invalid user data:",
-        error
-      );
-
+      console.error("Invalid user data:", error);
       return null;
     }
   };
 
-  // =========================
+  // =====================================================
   // FETCH CUSTOMER SHIPMENTS
-  // =========================
-  const fetchShipments = async () => {
+  // =====================================================
+
+  const fetchShipments = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
@@ -57,12 +51,11 @@ function MyShipments() {
         );
 
         setShipments([]);
-
         return;
       }
 
       const response = await fetch(
-        `http://findparcel.onrender.com/api/shipments/customer/${customerId}`
+        `https://findparcel-backend.onrender.com/api/shipments/customer/${customerId}`
       );
 
       const data = await response.json();
@@ -90,18 +83,20 @@ function MyShipments() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  // =========================
+  // =====================================================
   // LOAD SHIPMENTS
-  // =========================
+  // =====================================================
+
   useEffect(() => {
     fetchShipments();
-  }, [location.key]);
+  }, [fetchShipments]);
 
-  // =========================
+  // =====================================================
   // FILTER SHIPMENTS
-  // =========================
+  // =====================================================
+
   const filteredShipments =
     activeFilter === "All"
       ? shipments
@@ -110,33 +105,32 @@ function MyShipments() {
             shipment.status === activeFilter
         );
 
-  // =========================
+  // =====================================================
   // STATISTICS
-  // =========================
-  const totalShipments =
-    shipments.length;
+  // =====================================================
 
-  const inTransitCount =
-    shipments.filter(
-      (shipment) =>
-        shipment.status === "In Transit"
-    ).length;
+  const totalShipments = shipments.length;
 
-  const deliveredCount =
-    shipments.filter(
-      (shipment) =>
-        shipment.status === "Delivered"
-    ).length;
+  const inTransitCount = shipments.filter(
+    (shipment) =>
+      shipment.status === "In Transit" ||
+      shipment.status === "Out for Delivery"
+  ).length;
 
-  const pendingCount =
-    shipments.filter(
-      (shipment) =>
-        shipment.status === "Pending"
-    ).length;
+  const deliveredCount = shipments.filter(
+    (shipment) =>
+      shipment.status === "Delivered"
+  ).length;
 
-  // =========================
+  const pendingCount = shipments.filter(
+    (shipment) =>
+      shipment.status === "Pending"
+  ).length;
+
+  // =====================================================
   // STATUS CLASS
-  // =========================
+  // =====================================================
+
   const getStatusClass = (status) => {
     switch (status) {
       case "In Transit":
@@ -160,9 +154,10 @@ function MyShipments() {
     }
   };
 
-  // =========================
+  // =====================================================
   // BUTTON TEXT
-  // =========================
+  // =====================================================
+
   const getButtonText = (status) => {
     if (
       status === "In Transit" ||
@@ -174,12 +169,17 @@ function MyShipments() {
     return "View";
   };
 
+  // =====================================================
+  // RENDER
+  // =====================================================
+
   return (
     <main className="shipments-page">
 
       {/* =========================
           HEADER
       ========================= */}
+
       <header className="shipments-header">
 
         <Link
@@ -203,6 +203,7 @@ function MyShipments() {
       {/* =========================
           INTRODUCTION
       ========================= */}
+
       <section className="shipments-introduction">
 
         <h2>
@@ -220,6 +221,7 @@ function MyShipments() {
       {/* =========================
           STATISTICS
       ========================= */}
+
       <section className="shipment-stats">
 
         <div className="stat-card">
@@ -303,6 +305,7 @@ function MyShipments() {
       {/* =========================
           FILTER
       ========================= */}
+
       <section className="shipment-filter">
 
         {[
@@ -335,6 +338,7 @@ function MyShipments() {
       {/* =========================
           LOADING
       ========================= */}
+
       {loading && (
         <div className="shipment-message">
           Loading your shipments...
@@ -345,6 +349,7 @@ function MyShipments() {
       {/* =========================
           ERROR
       ========================= */}
+
       {!loading && error && (
         <div className="shipment-message error">
           {error}
@@ -355,6 +360,7 @@ function MyShipments() {
       {/* =========================
           EMPTY
       ========================= */}
+
       {!loading &&
         !error &&
         filteredShipments.length === 0 && (
@@ -373,6 +379,7 @@ function MyShipments() {
       {/* =========================
           SHIPMENT LIST
       ========================= */}
+
       {!loading &&
         !error &&
         filteredShipments.length > 0 && (
@@ -390,6 +397,7 @@ function MyShipments() {
                   {/* =========================
                       HEADER
                   ========================= */}
+
                   <div className="shipment-item-header">
 
                     <div className="shipment-number">
@@ -427,6 +435,7 @@ function MyShipments() {
                   {/* =========================
                       ROUTE
                   ========================= */}
+
                   <div className="shipment-route">
 
                     <div className="location">
@@ -467,9 +476,11 @@ function MyShipments() {
                   {/* =========================
                       FOOTER
                   ========================= */}
+
                   <div className="shipment-footer">
 
                     {/* SHIPPED */}
+
                     <div>
 
                       <span>
@@ -487,27 +498,30 @@ function MyShipments() {
                     </div>
 
 
+                    {/* SHIPPING PRICE */}
 
-{/* SHIPPING PRICE */}
-<div>
+                    <div>
 
-  <span>
-    Shipping Price
-  </span>
+                      <span>
+                        Shipping Price
+                      </span>
 
-  <strong>
-    {shipment.shippingPrice !==
-    undefined &&
-    shipment.shippingPrice !== null
-      ? `${Number(
-          shipment.shippingPrice
-        ).toLocaleString()} FCFA`
-      : "N/A"}
-  </strong>
+                      <strong>
+                        {shipment.shippingPrice !==
+                          undefined &&
+                        shipment.shippingPrice !==
+                          null
+                          ? `${Number(
+                              shipment.shippingPrice
+                            ).toLocaleString()} FCFA`
+                          : "N/A"}
+                      </strong>
 
-</div>
+                    </div>
+
 
                     {/* EXPECTED / DELIVERED */}
+
                     <div>
 
                       <span>
@@ -535,6 +549,7 @@ function MyShipments() {
 
 
                     {/* TRACK / VIEW */}
+
                     <Link
                       to={`/track?tracking=${encodeURIComponent(
                         shipment.trackingNumber
@@ -561,6 +576,7 @@ function MyShipments() {
       {/* =========================
           CREATE SHIPMENT
       ========================= */}
+
       <Link
         to="/send-parcel"
         className="create-shipment-button"

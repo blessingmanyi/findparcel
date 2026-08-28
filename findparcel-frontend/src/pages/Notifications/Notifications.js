@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Notifications.css";
 
@@ -7,9 +7,10 @@ function Notifications() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // =========================
+  // =====================================================
   // GET LOGGED-IN CUSTOMER
-  // =========================
+  // =====================================================
+
   const getCustomerId = () => {
     const savedUser =
       localStorage.getItem("findparcelUser");
@@ -37,10 +38,11 @@ function Notifications() {
     }
   };
 
-  // =========================
+  // =====================================================
   // FETCH NOTIFICATIONS
-  // =========================
-  const fetchNotifications = async () => {
+  // =====================================================
+
+  const fetchNotifications = useCallback(async () => {
     try {
       setLoading(true);
       setError("");
@@ -58,7 +60,7 @@ function Notifications() {
       }
 
       const response = await fetch(
-        `http://findparcel.onrender.com/api/notifications/customer/${customerId}`
+        `https://findparcel-backend.onrender.com/api/notifications/customer/${customerId}`
       );
 
       const data = await response.json();
@@ -86,22 +88,24 @@ function Notifications() {
     } finally {
       setLoading(false);
     }
-  };
-
-  // =========================
-  // LOAD NOTIFICATIONS
-  // =========================
-  useEffect(() => {
-    fetchNotifications();
   }, []);
 
-  // =========================
+  // =====================================================
+  // LOAD NOTIFICATIONS
+  // =====================================================
+
+  useEffect(() => {
+    fetchNotifications();
+  }, [fetchNotifications]);
+
+  // =====================================================
   // MARK ONE AS READ
-  // =========================
+  // =====================================================
+
   const markAsRead = async (notificationId) => {
     try {
       const response = await fetch(
-        `http://findparcel.onrender.com/api/notifications/${notificationId}/read`,
+        `https://findparcel-backend.onrender.com/api/notifications/${notificationId}/read`,
         {
           method: "PATCH",
           headers: {
@@ -137,9 +141,10 @@ function Notifications() {
     }
   };
 
-  // =========================
+  // =====================================================
   // MARK ALL AS READ
-  // =========================
+  // =====================================================
+
   const markAllAsRead = async () => {
     try {
       const customerId = getCustomerId();
@@ -149,7 +154,7 @@ function Notifications() {
       }
 
       const response = await fetch(
-        `http://findparcel.onrender.com/api/notifications/customer/${customerId}/read-all`,
+        `https://findparcel-backend.onrender.com/api/notifications/customer/${customerId}/read-all`,
         {
           method: "PATCH",
           headers: {
@@ -181,32 +186,45 @@ function Notifications() {
     }
   };
 
-  // =========================
+  // =====================================================
   // FORMAT DATE
-  // =========================
+  // =====================================================
+
   const formatDate = (date) => {
     if (!date) {
       return "";
     }
 
-    return new Date(date).toLocaleString();
+    const parsedDate = new Date(date);
+
+    if (Number.isNaN(parsedDate.getTime())) {
+      return "";
+    }
+
+    return parsedDate.toLocaleString();
   };
 
-  // =========================
+  // =====================================================
   // UNREAD COUNT
-  // =========================
+  // =====================================================
+
   const unreadCount =
     notifications.filter(
       (notification) =>
         !notification.isRead
     ).length;
 
+  // =====================================================
+  // RENDER
+  // =====================================================
+
   return (
     <main className="notifications-page">
 
-      {/* =========================
+      {/* =================================================
           HEADER
-      ========================= */}
+      ================================================= */}
+
       <header className="notifications-header">
 
         <Link
@@ -217,23 +235,31 @@ function Notifications() {
         </Link>
 
         <div>
-          <h1>Notifications</h1>
+
+          <h1>
+            Notifications
+          </h1>
 
           <p>
             Stay updated about your shipments
           </p>
+
         </div>
 
       </header>
 
 
-      {/* =========================
+      {/* =================================================
           TOP BAR
-      ========================= */}
+      ================================================= */}
+
       <section className="notifications-top">
 
         <div>
-          <h2>Your Notifications</h2>
+
+          <h2>
+            Your Notifications
+          </h2>
 
           <p>
             {unreadCount === 0
@@ -244,9 +270,12 @@ function Notifications() {
                     : "notifications"
                 }.`}
           </p>
+
         </div>
 
+
         {unreadCount > 0 && (
+
           <button
             type="button"
             className="mark-all-button"
@@ -254,34 +283,42 @@ function Notifications() {
           >
             Mark all as read
           </button>
+
         )}
 
       </section>
 
 
-      {/* =========================
+      {/* =================================================
           LOADING
-      ========================= */}
+      ================================================= */}
+
       {loading && (
+
         <div className="notification-message">
           Loading notifications...
         </div>
+
       )}
 
 
-      {/* =========================
+      {/* =================================================
           ERROR
-      ========================= */}
+      ================================================= */}
+
       {!loading && error && (
+
         <div className="notification-message error">
           {error}
         </div>
+
       )}
 
 
-      {/* =========================
+      {/* =================================================
           EMPTY
-      ========================= */}
+      ================================================= */}
+
       {!loading &&
         !error &&
         notifications.length === 0 && (
@@ -292,7 +329,9 @@ function Notifications() {
               🔔
             </div>
 
-            <h3>No notifications yet</h3>
+            <h3>
+              No notifications yet
+            </h3>
 
             <p>
               When you create a shipment or your
@@ -305,9 +344,10 @@ function Notifications() {
         )}
 
 
-      {/* =========================
+      {/* =================================================
           NOTIFICATION LIST
-      ========================= */}
+      ================================================= */}
+
       {!loading &&
         !error &&
         notifications.length > 0 && (
@@ -332,7 +372,10 @@ function Notifications() {
                   }
                 >
 
+                  {/* ICON */}
+
                   <div className="notification-icon">
+
                     {notification.type ===
                     "shipment_created"
                       ? "📦"
@@ -340,8 +383,11 @@ function Notifications() {
                         "shipment_status"
                       ? "🚚"
                       : "🔔"}
+
                   </div>
 
+
+                  {/* CONTENT */}
 
                   <div className="notification-content">
 
@@ -352,7 +398,11 @@ function Notifications() {
                       </h3>
 
                       {!notification.isRead && (
-                        <span className="unread-dot"></span>
+
+                        <span
+                          className="unread-dot"
+                        ></span>
+
                       )}
 
                     </div>
@@ -364,14 +414,20 @@ function Notifications() {
 
 
                     {notification.trackingNumber && (
-                      <strong className="notification-tracking">
+
+                      <strong
+                        className="notification-tracking"
+                      >
                         Tracking Number:{" "}
                         {notification.trackingNumber}
                       </strong>
+
                     )}
 
 
-                    <span className="notification-date">
+                    <span
+                      className="notification-date"
+                    >
                       {formatDate(
                         notification.createdAt
                       )}
