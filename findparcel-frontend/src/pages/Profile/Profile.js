@@ -47,7 +47,7 @@ function Profile() {
     const fetchShipments = async () => {
       try {
         const response = await fetch(
-          "https://findparcel.onrender.com//api/shipments"
+          "https://findparcel.onrender.com/api/shipments"
         );
 
         if (!response.ok) {

@@ -42,7 +42,7 @@ function Login() {
       setLoading(true);
 
       const response = await fetch(
-        "https://findparcel.onrender.com//api/auth/login",
+        "https://findparcel.onrender.com/api/auth/login",
         {
           method: "POST",
 

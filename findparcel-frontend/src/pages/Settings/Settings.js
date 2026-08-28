@@ -158,7 +158,7 @@ function Settings() {
       setProfileLoading(true);
 
       const response = await fetch(
-        `https://findparcel.onrender.com//api/auth/profile/${customerId}`,
+        `https://findparcel.onrender.com/api/auth/profile/${customerId}`,
         {
           method: "PUT",
 
@@ -275,7 +275,7 @@ function Settings() {
       setPasswordLoading(true);
 
       const response = await fetch(
-        `https://findparcel.onrender.com//api/auth/password/${customerId}`,
+        `https://findparcel.onrender.com/api/auth/password/${customerId}`,
         {
           method: "PUT",
 
@@ -429,7 +429,7 @@ function Settings() {
 
     try {
       const response = await fetch(
-        `https://findparcel.onrender.com//api/auth/account/${customerId}`,
+        `https://findparcel.onrender.com/api/auth/account/${customerId}`,
         {
           method: "DELETE",
         }

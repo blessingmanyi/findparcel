@@ -55,7 +55,7 @@ function MyShipments() {
       }
 
       const response = await fetch(
-        `https://findparcel.onrender.com//api/shipments/customer/${customerId}`
+        `https://findparcel.onrender.com/api/shipments/customer/${customerId}`
       );
 
       const data = await response.json();

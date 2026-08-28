@@ -364,7 +364,7 @@ function TrackParcel() {
 
     try {
       const response = await fetch(
-        `https://findparcel.onrender.com//api/shipments/${formattedNumber}`
+        `https://findparcel.onrender.com/api/shipments/${formattedNumber}`
       );
 
       if (!response.ok) {
