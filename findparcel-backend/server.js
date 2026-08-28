@@ -1,8 +1,8 @@
+
 require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-const dotenv = require("dotenv");
 
 const connectDB = require("./config/db");
 const shipmentRoutes = require("./routes/shipmentRoutes");
@@ -11,8 +11,6 @@ const notificationRoutes = require("./routes/notificationRoutes");
 const addressRoutes = require("./routes/addressRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
-
-dotenv.config();
 
 const app = express();
 
@@ -23,19 +21,18 @@ const app = express();
 connectDB();
 
 // =====================================================
-// CORS CONFIGURATION
+// CORS
 // =====================================================
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://findparcel-flotwr1z7-findparcel.vercel.app",
+  "https://findparcel-omega.vercel.app",
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin
-      // (for example, Postman or server-to-server requests)
+      // Allow requests without an origin
       if (!origin) {
         return callback(null, true);
       }
@@ -43,6 +40,8 @@ app.use(
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
+
+      console.log("Blocked CORS origin:", origin);
 
       return callback(
         new Error("Not allowed by CORS")
@@ -70,7 +69,13 @@ app.use(
 );
 
 // =====================================================
-// BODY PARSER
+// HANDLE PREFLIGHT REQUESTS
+// =====================================================
+
+app.options("*", cors());
+
+// =====================================================
+// JSON BODY
 // =====================================================
 
 app.use(express.json());
@@ -150,3 +155,4 @@ app.listen(PORT, () => {
     `FindParcel backend running on port ${PORT}`
   );
 });
+
