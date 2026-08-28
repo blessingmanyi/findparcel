@@ -720,4 +720,4 @@ function MyShipments() {
   );
 }
 
-export default MyShipm
+export default MyShipments;
